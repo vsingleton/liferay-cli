@@ -42,7 +42,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
         implements Shell {
 
     private static final String MY_SLOT = AbstractShell.class.getName();
-    protected static final String ROO_PROMPT = "roo> ";
+    protected static final String ROO_PROMPT = "lfr> ";
 
     // Public static fields; don't rename, make final, or make non-public, as
     // they are part of the public API, e.g. are changed by STS.
@@ -593,13 +593,13 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
             return sb.toString();
         }
 
-        sb.append("    ____  ____  ____  ").append(LINE_SEPARATOR);
-        sb.append("   / __ \\/ __ \\/ __ \\ ").append(LINE_SEPARATOR);
-        sb.append("  / /_/ / / / / / / / ").append(LINE_SEPARATOR);
-        sb.append(" / _, _/ /_/ / /_/ /  ").append(LINE_SEPARATOR);
-        sb.append("/_/ |_|\\____/\\____/   ").append(" ").append(versionInfo())
-                .append(LINE_SEPARATOR);
-        sb.append(LINE_SEPARATOR);
+//        sb.append("    ____  ____  ____  ").append(LINE_SEPARATOR);
+//        sb.append("   / __ \\/ __ \\/ __ \\ ").append(LINE_SEPARATOR);
+//        sb.append("  / /_/ / / / / / / / ").append(LINE_SEPARATOR);
+//        sb.append(" / _, _/ /_/ / /_/ /  ").append(LINE_SEPARATOR);
+//        sb.append("/_/ |_|\\____/\\____/   ").append(" ").append(versionInfo())
+//                .append(LINE_SEPARATOR);
+//        sb.append(LINE_SEPARATOR);
 
         return sb.toString();
     }

@@ -497,16 +497,16 @@ public abstract class JLineShell extends AbstractShell implements
 
         logger.info(version(null));
 
-        flash(Level.FINE, "Spring Roo " + versionInfo(),
+        flash(Level.FINE, "Liferay CLI" + versionInfo(),
                 Shell.WINDOW_TITLE_SLOT);
 
-        logger.info("Welcome to Spring Roo. For assistance press "
+        logger.info("Welcome to Liferay CLI. For assistance press "
                 + completionKeys + " or type \"hint\" then hit ENTER.");
 
-        final String startupNotifications = getStartupNotifications();
-        if (StringUtils.isNotBlank(startupNotifications)) {
-            logger.info(startupNotifications);
-        }
+//        final String startupNotifications = getStartupNotifications();
+//        if (StringUtils.isNotBlank(startupNotifications)) {
+//            logger.info(startupNotifications);
+//        }
 
         setShellStatus(Status.STARTED);
 

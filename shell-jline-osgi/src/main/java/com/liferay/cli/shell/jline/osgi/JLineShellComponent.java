@@ -49,7 +49,7 @@ public class JLineShellComponent extends JLineShell {
 
     protected void activate(final ComponentContext context) {
         this.context = context;
-        final Thread thread = new Thread(this, "Spring Roo JLine Shell");
+        final Thread thread = new Thread(this, "Liferay CLI JLine Shell");
         thread.start();
     }
 
@@ -142,15 +142,15 @@ public class JLineShellComponent extends JLineShell {
         return parser;
     }
 
-    @Override
-    public String getStartupNotifications() {
-        try {
-            return getLatestFavouriteTweet();
-        }
-        catch (final Exception e) {
-            return null;
-        }
-    }
+//    @Override
+//    public String getStartupNotifications() {
+//        try {
+//            return getLatestFavouriteTweet();
+//        }
+//        catch (final Exception e) {
+//            return null;
+//        }
+//    }
 
     // TODO: This should probably be moved to a HTTP service of some sort - JTT
     // 29/08/11

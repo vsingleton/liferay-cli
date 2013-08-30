@@ -24,9 +24,15 @@
         <module>shell-jline-osgi</module>
         <module>uaa</module>
         <module>felix</module>
-        <!--<module>model</module>-->
-        <module>metadata</module>
-   </modules>
+        <module>model</module>
+		<module>metadata</module>
+		<module>file-undo</module>
+        <module>file-monitor</module>
+        <module>file-monitor-polling</module>
+        <module>file-monitor-polling-lfr</module>
+        <module>project</module>
+		<module>process-manager</module>
+	</modules>
     <organization>
         <name>Liferay, Inc</name>
         <url>http://www.liferay.com/</url>
@@ -642,38 +648,38 @@
                 <artifactId>org.springframework.roo.felix</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.file.monitor</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.file.monitor.polling</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.file.monitor.polling.roo</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.file.undo</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 -->
+            <dependency>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.file.monitor</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.file.monitor.polling</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.file.monitor.polling.roo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.file.undo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.liferay.cli</groupId>
                 <artifactId>com.liferay.cli.metadata</artifactId>
                 <version>${project.version}</version>
             </dependency>
-<!-- 
             <dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.model</artifactId>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.model</artifactId>
                 <version>${project.version}</version>
             </dependency>
+<!-- 
             <dependency>
                 <groupId>org.springframework.roo</groupId>
                 <artifactId>org.springframework.roo.osgi.bundle</artifactId>
@@ -684,17 +690,17 @@
                 <artifactId>org.springframework.roo.osgi.roo.bundle</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.process.manager</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.project</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 -->            
+            <dependency>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.process.manager</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.project</artifactId>
+                <version>${project.version}</version>
+            </dependency>            
             <dependency>
                 <groupId>com.liferay.cli</groupId>
                 <artifactId>com.liferay.cli.shell</artifactId>
@@ -730,13 +736,11 @@
                 <artifactId>com.liferay.cli.support.osgi</artifactId>
                 <version>${project.version}</version>
             </dependency>
-<!--
 			<dependency>
-                <groupId>org.springframework.roo</groupId>
-                <artifactId>org.springframework.roo.uaa</artifactId>
+                <groupId>com.liferay.cli</groupId>
+                <artifactId>com.liferay.cli.uaa</artifactId>
                 <version>${project.version}</version>
             </dependency>
--->            
             <dependency>
                 <groupId>com.liferay.cli</groupId>
                 <artifactId>com.liferay.cli.url.stream</artifactId>
