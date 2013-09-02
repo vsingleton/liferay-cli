@@ -25,7 +25,7 @@
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
-        <!-- Roo -->
+        <!-- CLI -->
         <dependency>
             <groupId>com.liferay.cli</groupId>
             <artifactId>com.liferay.cli.support</artifactId>
@@ -53,17 +53,6 @@
         <dependency>
             <groupId>com.liferay.cli</groupId>
             <artifactId>com.liferay.cli.process.manager</artifactId>
-        </dependency>
-        <!-- 
-        <dependency>
-            <groupId>com.liferay.cli</groupId>
-            <artifactId>com.liferay.cli.uaa</artifactId>
-        </dependency>
-         -->
-        <!-- Spring User Agent Analysis (UAA) -->
-        <dependency>
-            <groupId>org.springframework.uaa</groupId>
-            <artifactId>org.springframework.uaa.client</artifactId>
         </dependency>
     </dependencies>
 </project>

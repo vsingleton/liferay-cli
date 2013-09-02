@@ -22,5 +22,5 @@ rem Build a classpath containing our two magical startup JARs
 for %%a in ("%LFR_HOME%\bootstrap\target\osgi\bin\*.jar") do set LFR_CP=!LFR_CP!%%a;
 
 rem Hop, hop, hop...
-java -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -Djline.nobell=true %LFR_OPTS% -Dlfr.args="%*" -DdevelopmentMode=true -Dorg.osgi.framework.storage="%LFR_HOME%\bootstrap\target\osgi\cache" -Dfelix.auto.deploy.dir="%LFR_HOME%\bootstrap\target\osgi\bundle" -Dfelix.config.properties="file:%LFR_HOME%\bootstrap\target\osgi\conf\config.properties" -DLFR.console.ansi=true -cp "%LFR_CP%" com.liferay.cli.bootstrap.Main
+java -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -Djline.nobell=true %LFR_OPTS% -Dlfr.args="%*" -DdevelopmentMode=true -Dorg.osgi.framework.storage="%LFR_HOME%\bootstrap\target\osgi\cache" -Dfelix.auto.deploy.dir="%LFR_HOME%\bootstrap\target\osgi\bundle" -Dfelix.config.properties="file:%LFR_HOME%\bootstrap\target\osgi\conf\config.properties" -Dlfr.console.ansi=true -cp "%LFR_CP%" com.liferay.cli.bootstrap.Main
 echo LFR exited with code %errorlevel%

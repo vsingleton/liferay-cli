@@ -63,6 +63,7 @@ public final class XmlUtils {
     private static final TransformerFactory TRANSFORMER_FACTORY = TransformerFactory
             .newInstance();
     private static final XPath XPATH = XPathFactory.newInstance().newXPath();
+    private static DocumentBuilderFactory documentBuilderFactory = null;
 
     /**
      * Checks the presented element for illegal characters that could cause
@@ -645,6 +646,21 @@ public final class XmlUtils {
         }
     }
 
+    public static Document parse(InputStream is) {
+		try {
+			return getDocumentBuilderFactory().newDocumentBuilder().parse(is);
+		}
+		catch (Exception e) {
+			throw new IllegalStateException("Could not parse steam into Document", e);
+		}
+	}
+    
+    private static DocumentBuilderFactory getDocumentBuilderFactory() {
+		if (documentBuilderFactory == null) {
+			documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		}
+		return documentBuilderFactory;
+	}
     /**
      * Constructor is private to prevent instantiation
      */

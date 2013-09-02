@@ -18,16 +18,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.uaa.client.util.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.liferay.cli.project.Dependency;
-import com.liferay.cli.project.maven.Module;
-import com.liferay.cli.project.maven.Pom;
-import com.liferay.cli.project.maven.PomFactoryImpl;
 import com.liferay.cli.project.packaging.PackagingProvider;
 import com.liferay.cli.project.packaging.PackagingProviderRegistry;
+import com.liferay.cli.support.util.XmlUtils;
 
 /**
  * Unit test of {@link PomFactoryImpl}

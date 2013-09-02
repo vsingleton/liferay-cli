@@ -8,6 +8,7 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.felix.shell.ShellService;
 import org.osgi.service.component.ComponentContext;
+
 import com.liferay.cli.shell.CliCommand;
 import com.liferay.cli.shell.CliOption;
 import com.liferay.cli.shell.CommandMarker;
@@ -22,7 +23,7 @@ import com.liferay.cli.support.logging.LoggingOutputStream;
 /**
  * Delegates to commands provided via Felix's Shell API.
  * <p>
- * Also monitors the Roo Shell to determine when it wishes to shutdown. This
+ * Also monitors the CLI Shell to determine when it wishes to shutdown. This
  * shutdown request is then passed through to Felix for processing.
  * 
  * @author Ben Alex
@@ -31,20 +32,20 @@ import com.liferay.cli.support.logging.LoggingOutputStream;
 @Service
 public class FelixDelegator implements CommandMarker, ShellStatusListener {
     private ComponentContext context;
-    @Reference private Shell rooShell;
+    @Reference private Shell lfrShell;
     @Reference private ShellService shellService;
     @Reference private StaticFieldConverter staticFieldConverter;
 
     protected void activate(final ComponentContext context) {
         this.context = context;
-        rooShell.addShellStatusListener(this);
+        lfrShell.addShellStatusListener(this);
         staticFieldConverter.add(LogLevel.class);
         staticFieldConverter.add(PsOptions.class);
     }
 
     protected void deactivate(final ComponentContext context) {
         this.context = null;
-        rooShell.removeShellStatusListener(this);
+        lfrShell.removeShellStatusListener(this);
         staticFieldConverter.remove(LogLevel.class);
         staticFieldConverter.remove(PsOptions.class);
     }
@@ -179,15 +180,15 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
             final ShellStatus newStatus) {
         if (newStatus.getStatus().equals(Status.SHUTTING_DOWN)) {
             try {
-                if (rooShell != null) {
-                    if (rooShell.getExitShellRequest() != null) {
+                if (lfrShell != null) {
+                    if (lfrShell.getExitShellRequest() != null) {
                         // ROO-836
                         System.setProperty("roo.exit", Integer
-                                .toString(rooShell.getExitShellRequest()
+                                .toString(lfrShell.getExitShellRequest()
                                         .getExitCode()));
                     }
                     System.setProperty("developmentMode",
-                            Boolean.toString(rooShell.isDevelopmentMode()));
+                            Boolean.toString(lfrShell.isDevelopmentMode()));
                 }
                 perform("shutdown");
             }

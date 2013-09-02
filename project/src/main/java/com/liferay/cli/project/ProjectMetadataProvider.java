@@ -17,7 +17,7 @@ public interface ProjectMetadataProvider extends MetadataProvider {
     /**
      * Attempts to add the specified build plugin. If the plugin already exists
      * according to
-     * {@link ProjectMetadata#isBuildPluginRegistered(org.springframework.roo.project.Plugin)}
+     * {@link ProjectMetadata#isBuildPluginRegistered(com.liferay.cli.project.Plugin)}
      * , the method silently returns. Otherwise the plugin is added.
      * <p>
      * An exception is thrown if this method is called before there is
@@ -58,7 +58,7 @@ public interface ProjectMetadataProvider extends MetadataProvider {
     /**
      * Attempts to add the specified dependency. If the dependency already
      * exists according to to
-     * {@link ProjectMetadata#isDependencyRegistered(org.springframework.roo.project.Dependency)}
+     * {@link ProjectMetadata#isDependencyRegistered(com.liferay.cli.project.Dependency)}
      * , the method silently returns. Otherwise the dependency is added.
      * <p>
      * An exception is thrown if this method is called before there is
@@ -72,7 +72,7 @@ public interface ProjectMetadataProvider extends MetadataProvider {
     /**
      * Attempts to add the specified filter. If the filter already exists
      * according to
-     * {@link ProjectMetadata#isFilterRegistered(org.springframework.roo.project.Filter)}
+     * {@link ProjectMetadata#isFilterRegistered(com.liferay.cli.project.Filter)}
      * , the method silently returns. Otherwise the filter is added.
      * <p>
      * An exception is thrown if this method is called before there is
@@ -114,7 +114,7 @@ public interface ProjectMetadataProvider extends MetadataProvider {
     /**
      * Attempts to add the specified property. If the property already exists
      * according to
-     * {@link ProjectMetadata#isPropertyRegistered(org.springframework.roo.project.Property)}
+     * {@link ProjectMetadata#isPropertyRegistered(com.liferay.cli.project.Property)}
      * , the method silently returns. Otherwise the property is added.
      * <p>
      * An exception is thrown if this method is called before there is
@@ -220,7 +220,7 @@ public interface ProjectMetadataProvider extends MetadataProvider {
     /**
      * Attempts to remove the specified filter. If the filter does not exist
      * according to
-     * {@link ProjectMetadata#isFilterRegistered(org.springframework.roo.project.Filter)}
+     * {@link ProjectMetadata#isFilterRegistered(com.liferay.cli.project.Filter)}
      * , the method silently returns. Otherwise the located filter is removed.
      * <p>
      * An exception is thrown if this method is called before there is

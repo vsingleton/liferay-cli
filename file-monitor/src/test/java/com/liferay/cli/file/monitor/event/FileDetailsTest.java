@@ -1,4 +1,4 @@
-package org.springframework.roo.file.monitor.event;
+package com.liferay.cli.file.monitor.event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

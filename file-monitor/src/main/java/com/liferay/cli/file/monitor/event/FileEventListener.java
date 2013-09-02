@@ -10,7 +10,7 @@ public interface FileEventListener {
 
     /**
      * Invoked by a
-     * {@link org.springframework.roo.file.monitor.polling.PollingFileMonitorService}
+     * {@link com.liferay.cli.file.monitor.polling.PollingFileMonitorService}
      * to report a new status.
      * 
      * @param fileEvent the file event (never null)

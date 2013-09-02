@@ -1,4 +1,4 @@
-package org.springframework.roo.file.monitor;
+package com.liferay.cli.file.monitor;
 
 import static com.liferay.cli.file.monitor.event.FileOperation.CREATED;
 import static com.liferay.cli.file.monitor.event.FileOperation.DELETED;

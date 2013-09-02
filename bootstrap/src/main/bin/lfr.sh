@@ -67,7 +67,7 @@ if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
 	APPLE_TERMINAL=true
 fi
 
-ANSI="-DLFR.console.ansi=true"
+ANSI="-Dlfr.console.ansi=true"
 # Hop, hop, hop...
 java -Dis.apple.terminal=$APPLE_TERMINAL $LFR_OPTS $ANSI -DLFR.args="$*" -DdevelopmentMode=false -Dorg.osgi.framework.storage="$LFR_OSGI_FRAMEWORK_STORAGE" -Dfelix.auto.deploy.dir="$LFR_AUTO_DEPLOY_DIRECTORY" -Dfelix.config.properties="file:$LFR_CONFIG_FILE_PROPERTIES" -cp "$LFR_CP" com.liferay.cli.bootstrap.Main
 EXITED=$?

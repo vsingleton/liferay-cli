@@ -1,14 +1,15 @@
 package com.liferay.cli.project;
 
 import org.apache.commons.lang3.Validate;
+
 import com.liferay.cli.file.monitor.FileMonitorService;
 import com.liferay.cli.file.monitor.MonitoringRequest;
 import com.liferay.cli.file.undo.UndoManager;
 import com.liferay.cli.file.undo.UndoableOperation;
 
 /**
- * Allows {@link org.springframework.roo.file.monitor.MonitoringRequest}s to be
- * applied as {@link org.springframework.roo.file.undo.UndoableOperation}s.
+ * Allows {@link com.liferay.cli.file.monitor.MonitoringRequest}s to be
+ * applied as {@link com.liferay.cli.file.undo.UndoableOperation}s.
  * 
  * @author Ben Alex
  * @since 1.0

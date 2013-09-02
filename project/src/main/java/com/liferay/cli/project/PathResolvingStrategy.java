@@ -84,7 +84,7 @@ public interface PathResolvingStrategy {
      * falls under, and then returns the relative portion of the file name.
      * <p>
      * See
-     * {@link org.springframework.roo.file.monitor.event.FileDetails#getRelativeSegment(String)}
+     * {@link com.liferay.cli.file.monitor.event.FileDetails#getRelativeSegment(String)}
      * for related information.
      * 
      * @param identifier to resolve (required)

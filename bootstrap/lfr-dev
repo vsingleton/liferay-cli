@@ -15,7 +15,7 @@ LFR_HOME=`dirname "$PRG"`
 
 # Absolute path
 LFR_HOME=`cd "$LFR_HOME/.." ; pwd`
-# echo "Resolved LFR_HOME: $LFR_HOME"
+echo "Resolved LFR_HOME: $LFR_HOME"
 
 mkdir -p "$LFR_HOME"/bootstrap/target/osgi/bin
 mkdir -p "$LFR_HOME"/bootstrap/target/osgi/bundle
@@ -78,10 +78,10 @@ fi
 #DEBUG=
 DEBUG="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
 PAUSE=
-#PAUSE="-DLFR.pause=true"
+#PAUSE="-Dlfr.pause=true"
 METADATA_TRACE=
-#METADATA_TRACE="-DLFR.metadata.trace=true"
-ANSI="-DLFR.console.ansi=true"
-java $PAUSE $DEBUG $METADATA_TRACE $ANSI -Dis.apple.terminal=$APPLE_TERMINAL $LFR_OPTS -Dorg.osgi.framework.bootdelegation=org.netbeans.lib.profiler,org.netbeans.lib.profiler.\* -DLFR.args="$*" -DdevelopmentMode=true -Dorg.osgi.framework.storage="$LFR_OSGI_FRAMEWORK_STORAGE" -Dfelix.auto.deploy.dir="$LFR_AUTO_DEPLOY_DIRECTORY" -Dfelix.config.properties="file:$LFR_CONFIG_FILE_PROPERTIES" -cp "$LFR_CP" com.liferay.cli.bootstrap.Main
+#METADATA_TRACE="-Dlfr.metadata.trace=true"
+ANSI="-Dlfr.console.ansi=true"
+java $PAUSE $DEBUG $METADATA_TRACE $ANSI -Dis.apple.terminal=$APPLE_TERMINAL $LFR_OPTS -Dorg.osgi.framework.bootdelegation=org.netbeans.lib.profiler,org.netbeans.lib.profiler.\* -Dlfr.args="$*" -DdevelopmentMode=true -Dorg.osgi.framework.storage="$LFR_OSGI_FRAMEWORK_STORAGE" -Dfelix.auto.deploy.dir="$LFR_AUTO_DEPLOY_DIRECTORY" -Dfelix.config.properties="file:$LFR_CONFIG_FILE_PROPERTIES" -cp "$LFR_CP" com.liferay.cli.bootstrap.Main
 EXITED=$?
 echo LFR exited with code $EXITED
