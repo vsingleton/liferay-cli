@@ -10,6 +10,7 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.osgi.framework.Bundle;
 import org.osgi.service.component.ComponentContext;
+
 import com.liferay.cli.shell.Completion;
 import com.liferay.cli.shell.Converter;
 import com.liferay.cli.shell.MethodTarget;
@@ -28,7 +29,7 @@ public class BundleSymbolicNameConverter implements
     private ComponentContext context;
     // Handler service field is solely to ensure it starts before
     // BundleSymbolicNameConverter
-    @Reference protected HttpPgpUrlStreamHandlerService handlerService;
+//    @Reference protected HttpPgpUrlStreamHandlerService handlerService;
     @Reference private RepositoryAdmin repositoryAdmin;
 
     protected void activate(final ComponentContext context) {

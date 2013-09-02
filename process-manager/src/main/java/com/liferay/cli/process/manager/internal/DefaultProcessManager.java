@@ -204,7 +204,7 @@ public class DefaultProcessManager extends
                     }
                 }
             }
-        }, "Spring Roo Process Manager Background Polling Thread");
+        }, "Liferay CLI Process Manager Background Polling Thread");
         t.start();
     }
 

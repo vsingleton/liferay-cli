@@ -54,10 +54,12 @@
             <groupId>com.liferay.cli</groupId>
             <artifactId>com.liferay.cli.process.manager</artifactId>
         </dependency>
+        <!-- 
         <dependency>
             <groupId>com.liferay.cli</groupId>
             <artifactId>com.liferay.cli.uaa</artifactId>
         </dependency>
+         -->
         <!-- Spring User Agent Analysis (UAA) -->
         <dependency>
             <groupId>org.springframework.uaa</groupId>

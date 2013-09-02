@@ -9,7 +9,7 @@
     </parent>
     <artifactId>com.liferay.cli.felix</artifactId>
     <packaging>bundle</packaging>
-    <name>Liferay - Felix Interoperability</name>
+    <name>Liferay CLI - Felix Interoperability</name>
     <dependencies>
         <!-- OSGi -->
         <dependency>

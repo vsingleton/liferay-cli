@@ -141,7 +141,7 @@ public class PollingFileMonitorService implements NotifiableFileMonitorService {
 
         if (!currentFile.exists() || currentFile.getName().length() > 1
                 && currentFile.getName().startsWith(".")
-                || currentFile.getName().equals("log.roo")
+                || currentFile.getName().equals("log.lfr")
                 || currentFile.isDirectory()
                 && isExcludedDirectory(currentFile.getPath())) {
             return;

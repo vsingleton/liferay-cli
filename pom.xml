@@ -16,13 +16,10 @@
         <module>startlevel</module>
         <module>support</module>
         <module>support-osgi</module>
-        <module>url-stream</module>
-        <module>url-stream-jdk</module>
         <module>shell</module>
         <module>shell-osgi</module>
         <module>shell-jline</module>
         <module>shell-jline-osgi</module>
-        <module>uaa</module>
         <module>felix</module>
         <module>model</module>
 		<module>metadata</module>
@@ -736,11 +733,13 @@
                 <artifactId>com.liferay.cli.support.osgi</artifactId>
                 <version>${project.version}</version>
             </dependency>
+			<!--
 			<dependency>
                 <groupId>com.liferay.cli</groupId>
                 <artifactId>com.liferay.cli.uaa</artifactId>
                 <version>${project.version}</version>
             </dependency>
+			-->
             <dependency>
                 <groupId>com.liferay.cli</groupId>
                 <artifactId>com.liferay.cli.url.stream</artifactId>

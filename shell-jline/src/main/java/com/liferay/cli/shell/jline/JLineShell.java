@@ -393,10 +393,10 @@ public abstract class JLineShell extends AbstractShell implements
 
     private void openFileLogIfPossible() {
         try {
-            fileLog = new FileWriter("log.roo", true);
+            fileLog = new FileWriter("log.lfr", true);
             // First write, so let's record the date and time of the first user
             // command
-            fileLog.write("// Spring Roo " + versionInfo() + " log opened at "
+            fileLog.write("// Liferay CLI " + versionInfo() + " log opened at "
                     + df.format(new Date()) + "\n");
             fileLog.flush();
         }
@@ -503,10 +503,6 @@ public abstract class JLineShell extends AbstractShell implements
         logger.info("Welcome to Liferay CLI. For assistance press "
                 + completionKeys + " or type \"hint\" then hit ENTER.");
 
-//        final String startupNotifications = getStartupNotifications();
-//        if (StringUtils.isNotBlank(startupNotifications)) {
-//            logger.info(startupNotifications);
-//        }
 
         setShellStatus(Status.STARTED);
 
@@ -518,10 +514,10 @@ public abstract class JLineShell extends AbstractShell implements
                 // o.s.r.bootstrap.Main calls stop() which calls
                 // JLineShellComponent.deactivate() and that calls closeShell()
             }
-        }, "Spring Roo JLine Shutdown Hook"));
+        }, "Liferay CLI JLine Shutdown Hook"));
 
         // Handle any "execute-then-quit" operation
-        final String rooArgs = System.getProperty("roo.args");
+        final String rooArgs = System.getProperty("lfr.args");
         if (rooArgs != null && !"".equals(rooArgs)) {
             setShellStatus(Status.USER_INPUT);
             final boolean success = executeCommand(rooArgs);
