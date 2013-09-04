@@ -42,7 +42,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
         implements Shell {
 
     private static final String MY_SLOT = AbstractShell.class.getName();
-    protected static final String ROO_PROMPT = "lfr> ";
+    protected static final String ROO_PROMPT = "ray> ";
 
     // Public static fields; don't rename, make final, or make non-public, as
     // they are part of the public API, e.g. are changed by STS.

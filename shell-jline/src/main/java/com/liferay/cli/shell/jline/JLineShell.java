@@ -393,7 +393,7 @@ public abstract class JLineShell extends AbstractShell implements
 
     private void openFileLogIfPossible() {
         try {
-            fileLog = new FileWriter("log.lfr", true);
+            fileLog = new FileWriter("log.ray", true);
             // First write, so let's record the date and time of the first user
             // command
             fileLog.write("// Liferay CLI " + versionInfo() + " log opened at "
@@ -517,7 +517,7 @@ public abstract class JLineShell extends AbstractShell implements
         }, "Liferay CLI JLine Shutdown Hook"));
 
         // Handle any "execute-then-quit" operation
-        final String rooArgs = System.getProperty("lfr.args");
+        final String rooArgs = System.getProperty("ray.args");
         if (rooArgs != null && !"".equals(rooArgs)) {
             setShellStatus(Status.USER_INPUT);
             final boolean success = executeCommand(rooArgs);

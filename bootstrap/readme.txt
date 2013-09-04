@@ -16,10 +16,10 @@ the "ten minute test" of building an application from scratch and
 starting it up. You can find this documentation (in several formats)
 in your main Roo installation directory:
 
-  $LFR_HOME/docs/html/index.html
-  $LFR_HOME/docs/pdf/liferay-cli-docs.pdf
+  $ray_HOME/docs/html/index.html
+  $ray_HOME/docs/pdf/liferay-cli-docs.pdf
 
 You can also find documentation online at:
 
 Once again, welcome to the Liferay community! We hope that you find
-Lfr as much fun to work with as we have had in building it.
+Ray as much fun to work with as we have had in building it.

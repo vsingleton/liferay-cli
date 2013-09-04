@@ -83,9 +83,9 @@ public class Activator implements BundleActivator {
 
     private void potentiallyChangeStartLevel() {
         if (requiredImplementations.keySet().equals(runningImplementations)) {
-            if (System.getProperty("lfr.pause") != null) {
+            if (System.getProperty("ray.pause") != null) {
                 System.out
-                        .println("lfr.pause detected; press any key to proceed");
+                        .println("ray.pause detected; press any key to proceed");
                 try {
                     System.in.read();
                 }

@@ -20,10 +20,6 @@
             <groupId>com.liferay.cli</groupId>
             <artifactId>com.liferay.cli.shell</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.liferay.cli</groupId>
-            <artifactId>com.liferay.cli.url.stream.jdk</artifactId>
-        </dependency>
         <!-- External modules -->
         <dependency>
             <groupId>net.sourceforge.jline</groupId>

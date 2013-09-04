@@ -1,4 +1,4 @@
-package com.liferay.cli.file.monitor.polling.lfr;
+package com.liferay.cli.file.monitor.polling.ray;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;

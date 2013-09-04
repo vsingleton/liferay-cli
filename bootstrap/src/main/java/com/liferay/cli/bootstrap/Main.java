@@ -293,7 +293,7 @@ public class Main
             if (System.getProperty("developmentMode") != null && System.getProperty("developmentMode").equals(Boolean.TRUE.toString())) {
                 System.out.println("Total execution time " + Math.round(((System.nanoTime() - startedNanoseconds) / 1000000000D) * Math.pow(10, 3)) / Math.pow(10, 3) + " seconds");
             }
-            System.exit(System.getProperty("lfr.exit") == null ? 99 : new Integer(System.getProperty("lfr.exit")));
+            System.exit(System.getProperty("ray.exit") == null ? 99 : new Integer(System.getProperty("ray.exit")));
             // **** END OF CHANGE FROM ORIGINAL FELIX VERSION ****
         }
         catch (Exception ex)

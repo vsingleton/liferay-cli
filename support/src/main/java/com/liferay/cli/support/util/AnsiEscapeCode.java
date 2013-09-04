@@ -17,7 +17,7 @@ public enum AnsiEscapeCode {
 
     // Constant for the escape character
     private static final boolean ANSI_ENABLED = Boolean
-            .getBoolean("lfr.console.ansi");
+            .getBoolean("ray.console.ansi");
     private static final char ESC = 27;
 
     public static boolean isAnsiEnabled() {

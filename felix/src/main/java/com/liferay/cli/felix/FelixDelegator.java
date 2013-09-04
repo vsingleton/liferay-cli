@@ -32,20 +32,20 @@ import com.liferay.cli.support.logging.LoggingOutputStream;
 @Service
 public class FelixDelegator implements CommandMarker, ShellStatusListener {
     private ComponentContext context;
-    @Reference private Shell lfrShell;
+    @Reference private Shell rayShell;
     @Reference private ShellService shellService;
     @Reference private StaticFieldConverter staticFieldConverter;
 
     protected void activate(final ComponentContext context) {
         this.context = context;
-        lfrShell.addShellStatusListener(this);
+        rayShell.addShellStatusListener(this);
         staticFieldConverter.add(LogLevel.class);
         staticFieldConverter.add(PsOptions.class);
     }
 
     protected void deactivate(final ComponentContext context) {
         this.context = null;
-        lfrShell.removeShellStatusListener(this);
+        rayShell.removeShellStatusListener(this);
         staticFieldConverter.remove(LogLevel.class);
         staticFieldConverter.remove(PsOptions.class);
     }
@@ -180,15 +180,15 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
             final ShellStatus newStatus) {
         if (newStatus.getStatus().equals(Status.SHUTTING_DOWN)) {
             try {
-                if (lfrShell != null) {
-                    if (lfrShell.getExitShellRequest() != null) {
+                if (rayShell != null) {
+                    if (rayShell.getExitShellRequest() != null) {
                         // ROO-836
-                        System.setProperty("roo.exit", Integer
-                                .toString(lfrShell.getExitShellRequest()
+                        System.setProperty("ray.exit", Integer
+                                .toString(rayShell.getExitShellRequest()
                                         .getExitCode()));
                     }
                     System.setProperty("developmentMode",
-                            Boolean.toString(lfrShell.isDevelopmentMode()));
+                            Boolean.toString(rayShell.isDevelopmentMode()));
                 }
                 perform("shutdown");
             }

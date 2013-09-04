@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.liferay.cli</groupId>
-        <artifactId>com.liferay.cli.osgi.lfr.bundle</artifactId>
+        <artifactId>com.liferay.cli.osgi.ray.bundle</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../osgi-lfr-bundle</relativePath>
+        <relativePath>../osgi-ray-bundle</relativePath>
     </parent>
     <artifactId>com.liferay.cli.file.undo</artifactId>
     <packaging>bundle</packaging>
