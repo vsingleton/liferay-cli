@@ -22,4 +22,9 @@ public @interface CliCommand {
      *         specified)
      */
     String[] value();
+
+    /**
+     * @return Indicates if this command should only be shown when CLI is set to 'advanced' mode.
+     */
+    boolean advanced() default false;
 }

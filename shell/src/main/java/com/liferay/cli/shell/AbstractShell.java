@@ -2,6 +2,12 @@ package com.liferay.cli.shell;
 
 import static org.apache.commons.io.IOUtils.LINE_SEPARATOR;
 
+import com.liferay.cli.shell.event.AbstractShellStatusPublisher;
+import com.liferay.cli.shell.event.ShellStatus;
+import com.liferay.cli.shell.event.ShellStatus.Status;
+import com.liferay.cli.support.logging.HandlerUtils;
+import com.liferay.cli.support.util.CollectionUtils;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,16 +32,10 @@ import java.util.zip.ZipEntry;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import com.liferay.cli.support.logging.HandlerUtils;
-import com.liferay.cli.support.util.CollectionUtils;
-
-import com.liferay.cli.shell.event.AbstractShellStatusPublisher;
-import com.liferay.cli.shell.event.ShellStatus;
-import com.liferay.cli.shell.event.ShellStatus.Status;
 
 /**
  * Provides a base {@link Shell} implementation.
- * 
+ *
  * @author Ben Alex
  */
 public abstract class AbstractShell extends AbstractShellStatusPublisher
@@ -147,7 +147,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
             return executeCommandImpl(line);
         }
         for (final String command : commands) {
-            logger.info("roo-tailor> " + command);
+            logger.info("ray-tailor> " + command);
             if (!executeCommandImpl(command)) {
                 return false;
             }
@@ -274,7 +274,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
 
     /**
      * Returns any classpath resources with the given path
-     * 
+     *
      * @param path the path for which to search (never null)
      * @return <code>null</code> if the search can't be performed
      * @since 1.2.0
@@ -297,7 +297,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
         }
     }
 
-    @CliCommand(value = { "flash test" }, help = "Tests message flashing")
+    @CliCommand(value = { "flash test" }, help = "Tests message flashing", advanced = true)
     public void flashCustom() throws Exception {
         flash(Level.FINE, "Hello world", "a");
         Thread.sleep(150);
@@ -344,13 +344,13 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
      * If the path indicated by {@link #getHomeAsString()} does not exist, it
      * will be created as a directory. If this fails, an exception will be
      * thrown.
-     * 
+     *
      * @return the home directory for the current shell instance (which is
      *         guaranteed to exist and be a directory)
      */
     public File getHome() {
-        final String rooHome = getHomeAsString();
-        final File f = new File(rooHome);
+        final String rayHome = getHomeAsString();
+        final File f = new File(rayHome);
         Validate.isTrue(!f.exists() || f.exists() && f.isDirectory(),
                 "Path '%s' must be a directory, or it must not exist",
                 f.getAbsolutePath());
@@ -359,7 +359,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
         }
         Validate.isTrue(
                 f.exists() && f.isDirectory(),
-                "Path '%s' is not a directory; please specify roo.home system property correctly",
+                "Path '%s' is not a directory; please specify ray.home system property correctly",
                 f.getAbsolutePath());
         return f;
     }
@@ -391,7 +391,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
      * {@link AbstractShell} subclasses are encouraged to simply override
      * {@link #logCommandToOutput(String)} instead, and only override this
      * method if you actually need to fine-tune the output logic.
-     * 
+     *
      * @param line the parsed line (any comments have been removed; never null)
      * @param successful if the command was successful or not
      */
@@ -413,7 +413,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
      * Implementations should invoke {@link #getExitShellRequest()} to monitor
      * any attempts to exit the shell and release resources such as output log
      * files.
-     * 
+     *
      * @param processedLine the line that should be appended to some type of
      *            output (excluding the \n character)
      */
@@ -422,7 +422,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
 
     /**
      * Opens the given script for reading
-     * 
+     *
      * @param script the script to read (required)
      * @return a non-<code>null</code> input stream
      */
@@ -523,7 +523,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
      * designed for simple shell implementations. Advanced implementations (eg
      * those that support ANSI codes etc) will likely want to override this
      * method and set the {@link #shellPrompt} variable directly.
-     * 
+     *
      * @param path to set (can be null or empty; must NOT be formatted in any
      *            special way eg ANSI codes)
      */
@@ -535,7 +535,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
     /**
      * Default implementation of {@link Shell#setPromptPath(String, boolean))}
      * method to satisfy STS compatibility.
-     * 
+     *
      * @param path to set (can be null or empty)
      * @param overrideStyle
      */
@@ -552,7 +552,7 @@ public abstract class AbstractShell extends AbstractShellStatusPublisher
             @CliOption(key = "", help = "Special version flags") final String extra) {
         final StringBuilder sb = new StringBuilder();
 
-        if ("roorocks".equals(extra)) {
+        if ("rayrocks".equals(extra)) {
             sb.append("               /\\ /l").append(LINE_SEPARATOR);
             sb.append("               ((.Y(!").append(LINE_SEPARATOR);
             sb.append("                \\ |/").append(LINE_SEPARATOR);

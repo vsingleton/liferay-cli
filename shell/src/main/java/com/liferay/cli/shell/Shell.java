@@ -1,19 +1,19 @@
 package com.liferay.cli.shell;
 
+import com.liferay.cli.shell.event.ShellStatusProvider;
+
 import java.io.File;
 import java.util.logging.Level;
-
-import com.liferay.cli.shell.event.ShellStatusProvider;
 
 /**
  * Specifies the contract for an interactive shell.
  * <p>
  * Any interactive shell class which implements these methods can be launched by
- * the roo-bootstrap mechanism.
+ * the ray-bootstrap mechanism.
  * <p>
  * It is envisaged implementations will be provided for JLine initially, with
  * possible implementations for Eclipse in the future.
- * 
+ *
  * @author Ben Alex
  * @since 1.0
  */
@@ -29,7 +29,7 @@ public interface Shell extends ShellStatusProvider, ShellPromptAccessor {
     /**
      * Runs the specified command. Control will return to the caller after the
      * command is run.
-     * 
+     *
      * @param line to execute (required)
      * @return true if the command was successful, false if there was an
      *         exception
@@ -53,7 +53,7 @@ public interface Shell extends ShellStatusProvider, ShellPromptAccessor {
      * <p>
      * An implementation need not necessarily use the level or slot concepts.
      * They are expected to be used in most cases, though.
-     * 
+     *
      * @param level the importance of the message (cannot be null)
      * @param message to display (cannot be null, but may be empty)
      * @param slot the identification slot for the message (cannot be null or
@@ -69,7 +69,7 @@ public interface Shell extends ShellStatusProvider, ShellPromptAccessor {
 
     /**
      * Returns the home directory of the current running shell instance
-     * 
+     *
      * @return the home directory of the current shell instance
      */
     File getHome();
@@ -86,7 +86,7 @@ public interface Shell extends ShellStatusProvider, ShellPromptAccessor {
     /**
      * Indicates the shell should switch into a lower-level development mode.
      * The exact meaning varies by shell implementation.
-     * 
+     *
      * @param developmentMode true if development mode should be enabled, false
      *            otherwise
      */
@@ -97,7 +97,7 @@ public interface Shell extends ShellStatusProvider, ShellPromptAccessor {
      * ensure this path is included on the screen, taking care to merge it with
      * the product name and handle any special formatting requirements (such as
      * ANSI, if supported by the implementation).
-     * 
+     *
      * @param path to set (can be null or empty; must NOT be formatted in any
      *            special way eg ANSI codes)
      */
@@ -108,7 +108,7 @@ public interface Shell extends ShellStatusProvider, ShellPromptAccessor {
     /**
      * To support API compatibility with STS shell, tailor implementation should
      * be injected explicitly when activated.
-     * 
+     *
      * @param tailor the tailor implementation
      */
     void setTailor(Tailor tailor);

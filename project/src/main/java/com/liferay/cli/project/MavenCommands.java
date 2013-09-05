@@ -1,24 +1,24 @@
 package com.liferay.cli.project;
 
-import java.io.IOException;
-
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.Service;
 import com.liferay.cli.model.JavaPackage;
+import com.liferay.cli.project.maven.Pom;
+import com.liferay.cli.project.packaging.JarPackaging;
+import com.liferay.cli.project.packaging.PackagingProvider;
 import com.liferay.cli.shell.CliAvailabilityIndicator;
 import com.liferay.cli.shell.CliCommand;
 import com.liferay.cli.shell.CliOption;
 import com.liferay.cli.shell.CommandMarker;
 
-import com.liferay.cli.project.maven.Pom;
-import com.liferay.cli.project.packaging.JarPackaging;
-import com.liferay.cli.project.packaging.PackagingProvider;
+import java.io.IOException;
+
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
 
 /**
  * Shell commands for {@link MavenOperations} and also to launch native mvn
  * commands.
- * 
+ *
  * @author Ben Alex
  * @since 1.0
  */
@@ -36,13 +36,13 @@ public class MavenCommands implements CommandMarker {
     private static final String PERFORM_ECLIPSE_COMMAND = "perform eclipse";
     private static final String PERFORM_PACKAGE_COMMAND = "perform package";
     private static final String PERFORM_TESTS_COMMAND = "perform tests";
-    private static final String PROJECT_COMMAND = "project";
+//    private static final String PROJECT_COMMAND = "project";
     private static final String REPOSITORY_ADD_COMMAND = "maven repository add";
     private static final String REPOSITORY_REMOVE_COMMAND = "maven repository remove";
 
     @Reference private MavenOperations mavenOperations;
 
-    @CliCommand(value = DEPENDENCY_ADD_COMMAND, help = "Adds a new dependency to the Maven project object model (POM)")
+    @CliCommand(value = DEPENDENCY_ADD_COMMAND, help = "Adds a new dependency to the Maven project object model (POM)", advanced = true)
     public void addDependency(
             @CliOption(key = "groupId", mandatory = true, help = "The group ID of the dependency") final String groupId,
             @CliOption(key = "artifactId", mandatory = true, help = "The artifact ID of the dependency") final String artifactId,
@@ -54,7 +54,7 @@ public class MavenCommands implements CommandMarker {
                 groupId, artifactId, version, scope, classifier);
     }
 
-    @CliCommand(value = REPOSITORY_ADD_COMMAND, help = "Adds a new repository to the Maven project object model (POM)")
+    @CliCommand(value = REPOSITORY_ADD_COMMAND, help = "Adds a new repository to the Maven project object model (POM)", advanced = true)
     public void addRepository(
             @CliOption(key = "id", mandatory = true, help = "The ID of the repository") final String id,
             @CliOption(key = "name", mandatory = false, help = "The name of the repository") final String name,
@@ -64,7 +64,7 @@ public class MavenCommands implements CommandMarker {
                 new Repository(id, name, url));
     }
 
-    @CliCommand(value = MODULE_CREATE_COMMAND, help = "Creates a new Maven module")
+    @CliCommand(value = MODULE_CREATE_COMMAND, help = "Creates a new Maven module", advanced = true)
     public void createModule(
             @CliOption(key = "moduleName", mandatory = true, help = "The name of the module") final String moduleName,
             @CliOption(key = "topLevelPackage", mandatory = true, optionContext = "update", help = "The uppermost package name (this becomes the <groupId> in Maven and also the '~' value when using Roo's shell)") final JavaPackage topLevelPackage,
@@ -77,6 +77,7 @@ public class MavenCommands implements CommandMarker {
                 packaging, majorJavaVersion, artifactId);
     }
 
+    /* Old Roo command
     @CliCommand(value = PROJECT_COMMAND, help = "Creates a new Maven project")
     public void createProject(
             @CliOption(key = { "", "topLevelPackage" }, mandatory = true, optionContext = "update", help = "The uppermost package name (this becomes the <groupId> in Maven and also the '~' value when using Roo's shell)") final JavaPackage topLevelPackage,
@@ -88,18 +89,19 @@ public class MavenCommands implements CommandMarker {
         mavenOperations.createProject(topLevelPackage, projectName,
                 majorJavaVersion, parentPom, packaging);
     }
+    */
 
-    @CliCommand(value = MODULE_FOCUS_COMMAND, help = "Changes focus to a different project module")
+    @CliCommand(value = MODULE_FOCUS_COMMAND, help = "Changes focus to a different project module", advanced = true)
     public void focusModule(
             @CliOption(key = "moduleName", mandatory = true, help = "The module to focus on") final Pom module) {
 
         mavenOperations.setModule(module);
     }
 
-    @CliAvailabilityIndicator(PROJECT_COMMAND)
-    public boolean isCreateProjectAvailable() {
-        return mavenOperations.isCreateProjectAvailable();
-    }
+//    @CliAvailabilityIndicator(PROJECT_COMMAND)
+//    public boolean isCreateProjectAvailable() {
+//        return mavenOperations.isCreateProjectAvailable();
+//    }
 
     @CliAvailabilityIndicator({ DEPENDENCY_ADD_COMMAND,
             DEPENDENCY_REMOVE_COMMAND })
@@ -133,7 +135,7 @@ public class MavenCommands implements CommandMarker {
         mavenOperations.executeMvnCommand(command);
     }
 
-    @CliCommand(value = DEPENDENCY_REMOVE_COMMAND, help = "Removes an existing dependency from the Maven project object model (POM)")
+    @CliCommand(value = DEPENDENCY_REMOVE_COMMAND, help = "Removes an existing dependency from the Maven project object model (POM)", advanced = true)
     public void removeDependency(
             @CliOption(key = "groupId", mandatory = true, help = "The group ID of the dependency") final String groupId,
             @CliOption(key = "artifactId", mandatory = true, help = "The artifact ID of the dependency") final String artifactId,
@@ -145,7 +147,7 @@ public class MavenCommands implements CommandMarker {
                 version, classifier);
     }
 
-    @CliCommand(value = REPOSITORY_REMOVE_COMMAND, help = "Removes an existing repository from the Maven project object model (POM)")
+    @CliCommand(value = REPOSITORY_REMOVE_COMMAND, help = "Removes an existing repository from the Maven project object model (POM)", advanced = true)
     public void removeRepository(
             @CliOption(key = "id", mandatory = true, help = "The ID of the repository") final String id,
             @CliOption(key = "url", mandatory = true, help = "The URL of the repository") final String url) {

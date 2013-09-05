@@ -1,5 +1,8 @@
 package com.liferay.cli.support.osgi;
 
+import com.liferay.cli.support.ant.AntPathMatcher;
+import com.liferay.cli.support.ant.PathMatcher;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -11,12 +14,10 @@ import org.apache.commons.lang3.Validate;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
-import com.liferay.cli.support.ant.AntPathMatcher;
-import com.liferay.cli.support.ant.PathMatcher;
 
 /**
  * Utility methods relating to OSGi
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -27,7 +28,7 @@ public final class OSGiUtils {
     /**
      * The name of the property that stores the Roo working directory.
      */
-    public static final String ROO_WORKING_DIRECTORY_PROPERTY = "roo.working.directory";
+    public static final String ROO_WORKING_DIRECTORY_PROPERTY = "ray.working.directory";
 
     /**
      * The root path within an OSGi bundle
@@ -36,7 +37,7 @@ public final class OSGiUtils {
 
     /**
      * Executes the given callback on any bundles in the given context
-     * 
+     *
      * @param callback can be <code>null</code> to do nothing
      * @param context can be <code>null</code> to do nothing
      */
@@ -57,7 +58,7 @@ public final class OSGiUtils {
     /**
      * Searches the bundles in the given context for entries with the given
      * path.
-     * 
+     *
      * @param context that can be used to obtain bundles to search (can be
      *            <code>null</code>)
      * @param path the path of the resource to locate (as per
@@ -102,7 +103,7 @@ public final class OSGiUtils {
     /**
      * Returns the URIs of any entries among the given bundles whose URLs match
      * the given Ant-style path.
-     * 
+     *
      * @param context the context whose bundles to search (can be
      *            <code>null</code>)
      * @param antPathExpression the pattern for matching URLs against (required)
@@ -154,7 +155,7 @@ public final class OSGiUtils {
 
     /**
      * Returns the Roo working directory for the given OSGi component context
-     * 
+     *
      * @param componentContext the component context (required)
      * @return the path of the Roo working directory
      * @since 1.2.0

@@ -4,6 +4,11 @@ import static com.liferay.cli.shell.CliOption.EMPTY;
 import static com.liferay.cli.shell.CliOption.NULL;
 import static org.apache.commons.io.IOUtils.LINE_SEPARATOR;
 
+import com.liferay.cli.support.logging.HandlerUtils;
+import com.liferay.cli.support.util.CollectionUtils;
+import com.liferay.cli.support.util.XmlElementBuilder;
+import com.liferay.cli.support.util.XmlUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
@@ -42,14 +47,9 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.liferay.cli.support.logging.HandlerUtils;
-import com.liferay.cli.support.util.CollectionUtils;
-import com.liferay.cli.support.util.XmlElementBuilder;
-import com.liferay.cli.support.util.XmlUtils;
-
 /**
  * Default implementation of {@link Parser}.
- * 
+ *
  * @author Ben Alex
  * @since 1.0
  */
@@ -736,6 +736,11 @@ public class SimpleParser implements Parser {
         }
     }
 
+    protected Object getShellSetting(String settingsKey)
+    {
+        return null;
+    }
+
     private Set<String> getSpecifiedUnavailableOptions(
             final Set<CliOption> cliOptions, final Map<String, String> options) {
         final Set<String> cliOptionKeySet = new LinkedHashSet<String>();
@@ -1076,11 +1081,14 @@ public class SimpleParser implements Parser {
                     }
 
                     for (final String value : cmd.value()) {
-                        final String remainingBuffer = isMatch(buffer, value,
+                        if( isModeAllowed( cmd ))
+                        {
+                            final String remainingBuffer = isMatch(buffer, value,
                                 strictMatching);
-                        if (remainingBuffer != null) {
-                            result.add(new MethodTarget(method, command,
-                                    remainingBuffer, value));
+                            if (remainingBuffer != null) {
+                                result.add(new MethodTarget(method, command,
+                                        remainingBuffer, value));
+                            }
                         }
                     }
                 }
@@ -1089,9 +1097,21 @@ public class SimpleParser implements Parser {
         return result;
     }
 
+    private boolean isModeAllowed( CliCommand cmd )
+    {
+        if( cmd.advanced() )
+        {
+            Object advanced = getShellSetting( ShellSettingsProvider.ADVANCED_MODE );
+
+            return Boolean.TRUE.equals( advanced );
+        }
+
+        return true;
+    }
+
     /**
      * Normalises the given raw user input string ready for parsing
-     * 
+     *
      * @param rawInput the string to normalise; can't be <code>null</code>
      * @return a non-<code>null</code> string
      */

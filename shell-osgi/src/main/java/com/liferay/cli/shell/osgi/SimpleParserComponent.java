@@ -1,5 +1,15 @@
 package com.liferay.cli.shell.osgi;
 
+import com.liferay.cli.shell.AbstractShell;
+import com.liferay.cli.shell.CliCommand;
+import com.liferay.cli.shell.CliOption;
+import com.liferay.cli.shell.CommandMarker;
+import com.liferay.cli.shell.Converter;
+import com.liferay.cli.shell.Parser;
+import com.liferay.cli.shell.ShellSettingsProvider;
+import com.liferay.cli.shell.SimpleParser;
+import com.liferay.cli.support.api.AddOnSearch;
+
 import java.util.logging.Logger;
 
 import org.apache.felix.scr.annotations.Component;
@@ -10,18 +20,10 @@ import org.apache.felix.scr.annotations.ReferenceStrategy;
 import org.apache.felix.scr.annotations.References;
 import org.apache.felix.scr.annotations.Service;
 import org.osgi.service.component.ComponentContext;
-import com.liferay.cli.shell.AbstractShell;
-import com.liferay.cli.shell.CliCommand;
-import com.liferay.cli.shell.CliOption;
-import com.liferay.cli.shell.CommandMarker;
-import com.liferay.cli.shell.Converter;
-import com.liferay.cli.shell.Parser;
-import com.liferay.cli.shell.SimpleParser;
-import com.liferay.cli.support.api.AddOnSearch;
 
 /**
  * OSGi component launcher for {@link SimpleParser}.
- * 
+ *
  * @author Ben Alex
  * @since 1.1
  */
@@ -36,6 +38,7 @@ import com.liferay.cli.support.api.AddOnSearch;
 public class SimpleParserComponent extends SimpleParser implements
         CommandMarker {
     private AddOnSearch addOnSearch;
+    @Reference private ShellSettingsProvider shellSettingsProvider;
 
     protected void activate(final ComponentContext context) {
         bindCommand(this);
@@ -99,7 +102,20 @@ public class SimpleParserComponent extends SimpleParser implements
     }
 
     @Override
-    @CliCommand(value = "reference guide", help = "Writes the reference guide XML fragments (in DocBook format) into the current working directory")
+    protected Object getShellSetting(String settingsKey)
+    {
+        Object retval = null;
+
+        if( shellSettingsProvider != null )
+        {
+            retval = shellSettingsProvider.get( settingsKey );
+        }
+
+        return retval;
+    }
+
+    @Override
+    @CliCommand(value = "reference guide", help = "Writes the reference guide XML fragments (in DocBook format) into the current working directory", advanced = true)
     public void helpReferenceGuide() {
         super.helpReferenceGuide();
     }

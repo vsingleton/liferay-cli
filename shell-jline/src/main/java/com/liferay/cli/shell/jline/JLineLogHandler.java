@@ -2,6 +2,9 @@ package com.liferay.cli.shell.jline;
 
 import static org.apache.commons.io.IOUtils.LINE_SEPARATOR;
 
+import com.liferay.cli.shell.ShellPromptAccessor;
+import com.liferay.cli.support.util.AnsiEscapeCode;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Formatter;
@@ -19,20 +22,18 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.Validate;
-import com.liferay.cli.shell.ShellPromptAccessor;
-import com.liferay.cli.support.util.AnsiEscapeCode;
 
 /**
  * JDK logging {@link Handler} that emits log messages to a JLine
  * {@link ConsoleReader}.
- * 
+ *
  * @author Ben Alex
  * @since 1.0
  */
 public class JLineLogHandler extends Handler {
 
     private static final boolean BRIGHT_COLORS = Boolean
-            .getBoolean("roo.bright");
+            .getBoolean("ray.bright");
     private static boolean includeThreadName = false;
     private static String lastMessage;
     private static ThreadLocal<Boolean> redrawProhibit = new ThreadLocal<Boolean>();
@@ -43,10 +44,10 @@ public class JLineLogHandler extends Handler {
     }
 
     /**
-     * Makes text brighter if requested through system property 'roo.bright' and
+     * Makes text brighter if requested through system property 'ray.bright' and
      * works around issue on Windows in using reverse() in combination with the
      * Jansi lib, which leaves its 'negative' flag set unless reset explicitly.
-     * 
+     *
      * @return new patched ANSIBuffer
      */
     static ANSIBuffer getANSIBuffer() {

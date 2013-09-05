@@ -1,5 +1,14 @@
 package com.liferay.cli.shell.jline;
 
+import com.liferay.cli.shell.AbstractShell;
+import com.liferay.cli.shell.CommandMarker;
+import com.liferay.cli.shell.ExitShellRequest;
+import com.liferay.cli.shell.Shell;
+import com.liferay.cli.shell.event.ShellStatus;
+import com.liferay.cli.shell.event.ShellStatus.Status;
+import com.liferay.cli.shell.event.ShellStatusListener;
+import com.liferay.cli.support.util.AnsiEscapeCode;
+
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -30,14 +39,6 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.Validate;
-import com.liferay.cli.shell.AbstractShell;
-import com.liferay.cli.shell.CommandMarker;
-import com.liferay.cli.shell.ExitShellRequest;
-import com.liferay.cli.shell.Shell;
-import com.liferay.cli.shell.event.ShellStatus;
-import com.liferay.cli.shell.event.ShellStatus.Status;
-import com.liferay.cli.shell.event.ShellStatusListener;
-import com.liferay.cli.support.util.AnsiEscapeCode;
 
 /**
  * Uses the feature-rich <a
@@ -50,7 +51,7 @@ import com.liferay.cli.support.util.AnsiEscapeCode;
  * library is not necessary for *nix machines, which support colour ANSI without
  * any special effort. This implementation has been written to use reflection in
  * order to avoid hard dependencies on Jansi.
- * 
+ *
  * @author Ben Alex
  * @since 1.0
  */
@@ -337,23 +338,23 @@ public abstract class JLineShell extends AbstractShell implements
     }
 
     /**
-     * Obtains the "roo.home" from the system property, falling back to the
+     * Obtains the "ray.home" from the system property, falling back to the
      * current working directory if missing.
-     * 
-     * @return the 'roo.home' system property
+     *
+     * @return the 'ray.home' system property
      */
     @Override
     protected String getHomeAsString() {
-        String rooHome = System.getProperty("roo.home");
-        if (rooHome == null) {
+        String rayHome = System.getProperty("ray.home");
+        if (rayHome == null) {
             try {
-                rooHome = new File(".").getCanonicalPath();
+                rayHome = new File(".").getCanonicalPath();
             }
             catch (final Exception e) {
                 throw new IllegalStateException(e);
             }
         }
-        return rooHome;
+        return rayHome;
     }
 
     public String getStartupNotifications() {
@@ -480,7 +481,7 @@ public abstract class JLineShell extends AbstractShell implements
         // Try to build previous command history from the project's log
         try {
             final String logFileContents = FileUtils.readFileToString(new File(
-                    "log.roo"));
+                    "log.ray"));
             final String[] logEntries = logFileContents
                     .split(IOUtils.LINE_SEPARATOR);
             // LIFO
@@ -514,13 +515,13 @@ public abstract class JLineShell extends AbstractShell implements
                 // o.s.r.bootstrap.Main calls stop() which calls
                 // JLineShellComponent.deactivate() and that calls closeShell()
             }
-        }, "Liferay CLI JLine Shutdown Hook"));
+        }, "Ray JLine Shutdown Hook"));
 
         // Handle any "execute-then-quit" operation
-        final String rooArgs = System.getProperty("ray.args");
-        if (rooArgs != null && !"".equals(rooArgs)) {
+        final String rayArgs = System.getProperty("ray.args");
+        if (rayArgs != null && !"".equals(rayArgs)) {
             setShellStatus(Status.USER_INPUT);
-            final boolean success = executeCommand(rooArgs);
+            final boolean success = executeCommand(rayArgs);
             if (exitShellRequest == null) {
                 // The command itself did not specify an exit shell code, so
                 // we'll fall back to something sensible here

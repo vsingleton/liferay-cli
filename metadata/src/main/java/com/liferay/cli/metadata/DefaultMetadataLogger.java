@@ -1,5 +1,7 @@
 package com.liferay.cli.metadata;
 
+import com.liferay.cli.metadata.internal.StandardMetadataTimingStatistic;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,11 +14,9 @@ import org.apache.commons.lang3.Validate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-import com.liferay.cli.metadata.internal.StandardMetadataTimingStatistic;
-
 /**
  * Default implementation of {@link MetadataLogger}.
- * 
+ *
  * @author Ben Alex
  * @since 1.1.2
  */
@@ -46,7 +46,7 @@ public class DefaultMetadataLogger implements MetadataLogger {
     private int traceLevel = 0;
 
     public DefaultMetadataLogger() {
-        if (System.getProperty("roo.metadata.trace") != null) {
+        if (System.getProperty("ray.metadata.trace") != null) {
             traceLevel = 2;
         }
     }

@@ -1,14 +1,5 @@
 package com.liferay.cli.felix;
 
-import java.io.PrintStream;
-import java.util.logging.Level;
-
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.Service;
-import org.apache.felix.shell.ShellService;
-import org.osgi.service.component.ComponentContext;
-
 import com.liferay.cli.shell.CliCommand;
 import com.liferay.cli.shell.CliOption;
 import com.liferay.cli.shell.CommandMarker;
@@ -20,12 +11,21 @@ import com.liferay.cli.shell.event.ShellStatus.Status;
 import com.liferay.cli.shell.event.ShellStatusListener;
 import com.liferay.cli.support.logging.LoggingOutputStream;
 
+import java.io.PrintStream;
+import java.util.logging.Level;
+
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+import org.apache.felix.shell.ShellService;
+import org.osgi.service.component.ComponentContext;
+
 /**
  * Delegates to commands provided via Felix's Shell API.
  * <p>
  * Also monitors the CLI Shell to determine when it wishes to shutdown. This
  * shutdown request is then passed through to Felix for processing.
- * 
+ *
  * @author Ben Alex
  */
 @Component(immediate = true)
@@ -50,7 +50,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         staticFieldConverter.remove(PsOptions.class);
     }
 
-    @CliCommand(value = "osgi find", help = "Finds bundles by name")
+    @CliCommand(value = "osgi find", help = "Finds bundles by name", advanced = true)
     public void find(
             @CliOption(key = "bundleSymbolicName", mandatory = true, help = "A bundle symbolic name to find") final BundleSymbolicName bsn)
             throws Exception {
@@ -58,7 +58,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("find " + bsn.getKey());
     }
 
-    @CliCommand(value = "osgi headers", help = "Display headers for a specific bundle")
+    @CliCommand(value = "osgi headers", help = "Display headers for a specific bundle", advanced = true)
     public void headers(
             @CliOption(key = "bundleSymbolicName", mandatory = false, help = "Limit results to a specific bundle symbolic name") final BundleSymbolicName bsn)
             throws Exception {
@@ -72,7 +72,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         }
     }
 
-    @CliCommand(value = "osgi install", help = "Installs a bundle JAR from a given URL")
+    @CliCommand(value = "osgi install", help = "Installs a bundle JAR from a given URL", advanced = true)
     public void install(
             @CliOption(key = "url", mandatory = true, help = "The URL to obtain the bundle from") final String url)
             throws Exception {
@@ -80,7 +80,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("install " + url);
     }
 
-    @CliCommand(value = "osgi log", help = "Displays the OSGi log information")
+    @CliCommand(value = "osgi log", help = "Displays the OSGi log information", advanced = true)
     public void log(
             @CliOption(key = "maximumEntries", mandatory = false, help = "The maximum number of log messages to display") final Integer maximumEntries,
             @CliOption(key = "level", mandatory = false, help = "The minimum level of messages to display") final LogLevel logLevel)
@@ -97,7 +97,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform(sb.toString());
     }
 
-    @CliCommand(value = "osgi ps", help = "Displays OSGi bundle information")
+    @CliCommand(value = "osgi ps", help = "Displays OSGi bundle information", advanced = true)
     public void log(
             @CliOption(key = "format", mandatory = false, specifiedDefaultValue = "BUNDLE_NAME", unspecifiedDefaultValue = "BUNDLE_NAME", help = "The format of bundle information") final PsOptions format)
             throws Exception {
@@ -110,7 +110,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform(sb.toString());
     }
 
-    @CliCommand(value = "osgi obr deploy", help = "Deploys a specific OSGi Bundle Repository (OBR) bundle")
+    @CliCommand(value = "osgi obr deploy", help = "Deploys a specific OSGi Bundle Repository (OBR) bundle", advanced = true)
     public void obrDeploy(
             @CliOption(key = "bundleSymbolicName", mandatory = true, optionContext = "obr", help = "The specific bundle to deploy") final BundleSymbolicName bsn)
             throws Exception {
@@ -118,7 +118,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("obr deploy " + bsn.getKey());
     }
 
-    @CliCommand(value = "osgi obr info", help = "Displays information on a specific OSGi Bundle Repository (OBR) bundle")
+    @CliCommand(value = "osgi obr info", help = "Displays information on a specific OSGi Bundle Repository (OBR) bundle", advanced = true)
     public void obrInfo(
             @CliOption(key = "bundleSymbolicName", mandatory = true, optionContext = "obr", help = "The specific bundle to display information for") final BundleSymbolicName bsn)
             throws Exception {
@@ -126,7 +126,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("obr info " + bsn.getKey());
     }
 
-    @CliCommand(value = "osgi obr list", help = "Lists all available bundles from the OSGi Bundle Repository (OBR) system")
+    @CliCommand(value = "osgi obr list", help = "Lists all available bundles from the OSGi Bundle Repository (OBR) system", advanced = true)
     public void obrList(
             @CliOption(key = "keywords", mandatory = false, help = "Keywords to locate") final String keywords)
             throws Exception {
@@ -139,7 +139,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform(sb.toString());
     }
 
-    @CliCommand(value = "osgi obr start", help = "Starts a specific OSGi Bundle Repository (OBR) bundle")
+    @CliCommand(value = "osgi obr start", help = "Starts a specific OSGi Bundle Repository (OBR) bundle", advanced = true)
     public void obrStart(
             @CliOption(key = "bundleSymbolicName", mandatory = true, optionContext = "obr", help = "The specific bundle to start") final BundleSymbolicName bsn)
             throws Exception {
@@ -147,7 +147,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("obr start " + bsn.getKey());
     }
 
-    @CliCommand(value = "osgi obr url add", help = "Adds a new OSGi Bundle Repository (OBR) repository file URL")
+    @CliCommand(value = "osgi obr url add", help = "Adds a new OSGi Bundle Repository (OBR) repository file URL", advanced = true)
     public void obrUrlAdd(
             @CliOption(key = "url", mandatory = true, help = "The URL to add (eg http://felix.apache.org/obr/releases.xml)") final String url)
             throws Exception {
@@ -155,12 +155,12 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("obr add-url " + url);
     }
 
-    @CliCommand(value = "osgi obr url list", help = "Lists the currently-configured OSGi Bundle Repository (OBR) repository file URLs")
+    @CliCommand(value = "osgi obr url list", help = "Lists the currently-configured OSGi Bundle Repository (OBR) repository file URLs", advanced = true)
     public void obrUrlList() throws Exception {
         perform("obr list-url");
     }
 
-    @CliCommand(value = "osgi obr url refresh", help = "Refreshes an existing OSGi Bundle Repository (OBR) repository file URL")
+    @CliCommand(value = "osgi obr url refresh", help = "Refreshes an existing OSGi Bundle Repository (OBR) repository file URL", advanced = true)
     public void obrUrlRefresh(
             @CliOption(key = "url", mandatory = true, help = "The URL to refresh (list existing URLs via 'osgi obr url list')") final String url)
             throws Exception {
@@ -168,7 +168,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("obr refresh-url " + url);
     }
 
-    @CliCommand(value = "osgi obr url remove", help = "Removes an existing OSGi Bundle Repository (OBR) repository file URL")
+    @CliCommand(value = "osgi obr url remove", help = "Removes an existing OSGi Bundle Repository (OBR) repository file URL", advanced = true)
     public void obrUrlRemove(
             @CliOption(key = "url", mandatory = true, help = "The URL to remove (list existing URLs via 'osgi obr url list')") final String url)
             throws Exception {
@@ -220,7 +220,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         return ExitShellRequest.NORMAL_EXIT;
     }
 
-    @CliCommand(value = "osgi resolve", help = "Resolves a specific bundle ID")
+    @CliCommand(value = "osgi resolve", help = "Resolves a specific bundle ID", advanced = true)
     public void resolve(
             @CliOption(key = "bundleSymbolicName", mandatory = true, help = "The specific bundle to resolve") final BundleSymbolicName bsn)
             throws Exception {
@@ -229,12 +229,12 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
                 + bsn.findBundleIdWithoutFail(context.getBundleContext()));
     }
 
-    @CliCommand(value = "osgi scr config", help = "Lists the current SCR configuration")
+    @CliCommand(value = "osgi scr config", help = "Lists the current SCR configuration", advanced = true)
     public void scrConfig() throws Exception {
         perform("scr config");
     }
 
-    @CliCommand(value = "osgi scr disable", help = "Disables a specific SCR-defined component")
+    @CliCommand(value = "osgi scr disable", help = "Disables a specific SCR-defined component", advanced = true)
     public void scrDisable(
             @CliOption(key = "componentId", mandatory = true, help = "The specific component identifier (use 'osgi scr list' to list component identifiers)") final Integer id)
             throws Exception {
@@ -242,7 +242,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("scr disable " + id);
     }
 
-    @CliCommand(value = "osgi scr enable", help = "Enables a specific SCR-defined component")
+    @CliCommand(value = "osgi scr enable", help = "Enables a specific SCR-defined component", advanced = true)
     public void scrEnable(
             @CliOption(key = "componentId", mandatory = true, help = "The specific component identifier (use 'osgi scr list' to list component identifiers)") final Integer id)
             throws Exception {
@@ -250,7 +250,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("scr enable " + id);
     }
 
-    @CliCommand(value = "osgi scr info", help = "Lists information about a specific SCR-defined component")
+    @CliCommand(value = "osgi scr info", help = "Lists information about a specific SCR-defined component", advanced = true)
     public void scrInfo(
             @CliOption(key = "componentId", mandatory = true, help = "The specific component identifier (use 'osgi scr list' to list component identifiers)") final Integer id)
             throws Exception {
@@ -258,7 +258,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("scr info " + id);
     }
 
-    @CliCommand(value = "osgi scr list", help = "Lists all SCR-defined components")
+    @CliCommand(value = "osgi scr list", help = "Lists all SCR-defined components", advanced = true)
     public void scrList(
             @CliOption(key = "bundleId", mandatory = false, help = "Limit results to a specific bundle") final BundleSymbolicName bsn)
             throws Exception {
@@ -272,7 +272,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         }
     }
 
-    @CliCommand(value = "osgi framework command", help = "Passes a command directly through to the Felix shell infrastructure")
+    @CliCommand(value = "osgi framework command", help = "Passes a command directly through to the Felix shell infrastructure", advanced = true)
     public void shell(
             @CliOption(key = "", mandatory = false, specifiedDefaultValue = "help", unspecifiedDefaultValue = "help", help = "The command to pass to Felix (WARNING: no validation or security checks are performed)") final String commandLine)
             throws Exception {
@@ -280,7 +280,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform(commandLine);
     }
 
-    @CliCommand(value = "osgi start", help = "Starts a bundle JAR from a given URL")
+    @CliCommand(value = "osgi start", help = "Starts a bundle JAR from a given URL, advanced = true", advanced = true)
     public void start(
             @CliOption(key = "url", mandatory = true, help = "The URL to obtain the bundle from") final String url)
             throws Exception {
@@ -288,7 +288,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         perform("start " + url);
     }
 
-    @CliCommand(value = "osgi uninstall", help = "Uninstalls a specific bundle")
+    @CliCommand(value = "osgi uninstall", help = "Uninstalls a specific bundle", advanced = true)
     public void uninstall(
             @CliOption(key = "bundleSymbolicName", mandatory = true, help = "The specific bundle to uninstall") final BundleSymbolicName bsn)
             throws Exception {
@@ -297,7 +297,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
                 + bsn.findBundleIdWithoutFail(context.getBundleContext()));
     }
 
-    @CliCommand(value = "osgi update", help = "Updates a specific bundle")
+    @CliCommand(value = "osgi update", help = "Updates a specific bundle", advanced = true)
     public void update(
             @CliOption(key = "bundleSymbolicName", mandatory = true, help = "The specific bundle to update ") final BundleSymbolicName bsn,
             @CliOption(key = "url", mandatory = false, help = "The URL to obtain the updated bundle from") final String url)
@@ -312,7 +312,7 @@ public class FelixDelegator implements CommandMarker, ShellStatusListener {
         }
     }
 
-    @CliCommand(value = "osgi version", help = "Displays OSGi framework version")
+    @CliCommand(value = "osgi version", help = "Displays OSGi framework version", advanced = true)
     public void version() throws Exception {
         perform("version");
     }

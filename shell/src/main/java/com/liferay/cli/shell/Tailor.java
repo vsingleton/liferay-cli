@@ -7,8 +7,8 @@ public interface Tailor {
     /**
      * Transforms input command using available Tailor implementation and
      * activated configuration.
-     * 
-     * @param command - roo command line
+     *
+     * @param command - ray command line
      * @return - adjusted command or list of commands. empty list if command is
      *         not tailored
      */

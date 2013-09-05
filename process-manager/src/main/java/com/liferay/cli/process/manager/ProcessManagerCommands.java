@@ -1,17 +1,18 @@
 package com.liferay.cli.process.manager;
 
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.Service;
-import org.osgi.service.component.ComponentContext;
 import com.liferay.cli.shell.CliCommand;
 import com.liferay.cli.shell.CliOption;
 import com.liferay.cli.shell.CommandMarker;
 import com.liferay.cli.shell.Shell;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+import org.osgi.service.component.ComponentContext;
+
 /**
  * Commands related to file system monitoring and process management.
- * 
+ *
  * @author Ben Alex
  * @since 1.1
  */
@@ -29,7 +30,7 @@ public class ProcessManagerCommands implements CommandMarker {
         }
     }
 
-    @CliCommand(value = "development mode", help = "Switches the system into development mode (greater diagnostic information)")
+    @CliCommand(value = "development mode", help = "Switches the system into development mode (greater diagnostic information)", advanced = true)
     public String developmentMode(
             @CliOption(key = { "", "enabled" }, mandatory = false, specifiedDefaultValue = "true", unspecifiedDefaultValue = "true", help = "Activates development mode") final boolean enabled) {
         processManager.setDevelopmentMode(enabled);
@@ -37,7 +38,7 @@ public class ProcessManagerCommands implements CommandMarker {
         return "Development mode set to " + enabled;
     }
 
-    @CliCommand(value = "poll now", help = "Perform a manual file system poll")
+    @CliCommand(value = "poll now", help = "Perform a manual file system poll", advanced = true)
     public String poll() {
         final long originalSetting = processManager
                 .getMinimumDelayBetweenPoll();
@@ -52,7 +53,7 @@ public class ProcessManagerCommands implements CommandMarker {
         return "Manual poll completed";
     }
 
-    @CliCommand(value = "poll status", help = "Display file system polling information")
+    @CliCommand(value = "poll status", help = "Display file system polling information", advanced = true)
     public String pollingInfo() {
         final StringBuilder sb = new StringBuilder("File system polling ");
         final long duration = processManager.getLastPollDuration();
@@ -76,7 +77,7 @@ public class ProcessManagerCommands implements CommandMarker {
         return sb.toString();
     }
 
-    @CliCommand(value = "poll speed", help = "Changes the file system polling speed")
+    @CliCommand(value = "poll speed", help = "Changes the file system polling speed", advanced = true)
     public String pollingSpeed(
             @CliOption(key = { "", "ms" }, mandatory = true, help = "The number of milliseconds between each poll") final long minimumDelayBetweenPoll) {
         processManager.setMinimumDelayBetweenPoll(minimumDelayBetweenPoll);

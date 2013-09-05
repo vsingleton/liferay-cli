@@ -1,5 +1,9 @@
 package com.liferay.cli.project;
 
+import com.liferay.cli.metadata.MetadataDependencyRegistry;
+import com.liferay.cli.metadata.MetadataNotificationListener;
+import com.liferay.cli.project.maven.Pom;
+
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -7,16 +11,12 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.osgi.framework.Bundle;
 import org.osgi.service.component.ComponentContext;
-import com.liferay.cli.metadata.MetadataDependencyRegistry;
-import com.liferay.cli.metadata.MetadataNotificationListener;
-
-import com.liferay.cli.project.maven.Pom;
 
 /**
  * Automatically upgrades a Spring Roo annotation JAR to the current version of
  * Roo. If the annotation JAR is equal to or newer than the version of Roo
  * running, the upgrade service makes no changes.
- * 
+ *
  * @author Ben Alex
  * @since 1.1
  */
@@ -90,7 +90,7 @@ public class AutomaticProjectUpgradeService implements
     /**
      * Extracts the version information from the string. Never throws an
      * exception.
-     * 
+     *
      * @param version to extract from (can be null or empty)
      * @return the version information or null if it was not in a normal form
      */
@@ -128,13 +128,13 @@ public class AutomaticProjectUpgradeService implements
             }
 
             for (final Pom pom : projectOperations.getPoms()) {
-                final Set<Property> rooVersionResults = pom
-                        .getPropertiesExcludingValue(new Property("roo.version"));
-                for (final Property existingProperty : rooVersionResults) {
-                    final VersionInfo rooVersion = extractVersionInfoFromString(existingProperty
+                final Set<Property> rayVersionResults = pom
+                        .getPropertiesExcludingValue(new Property("ray.version"));
+                for (final Property existingProperty : rayVersionResults) {
+                    final VersionInfo rayVersion = extractVersionInfoFromString(existingProperty
                             .getValue());
-                    if (rooVersion != null) {
-                        if (rooVersion.compareTo(bundleVersionInfo) < 0) {
+                    if (rayVersion != null) {
+                        if (rayVersion.compareTo(bundleVersionInfo) < 0) {
                             final Property newProperty = new Property(
                                     existingProperty.getName(),
                                     bundleVersionInfo.toString());
