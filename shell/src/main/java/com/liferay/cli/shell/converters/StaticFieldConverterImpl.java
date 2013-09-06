@@ -1,5 +1,10 @@
 package com.liferay.cli.shell.converters;
 
+import com.liferay.cli.shell.Completion;
+import com.liferay.cli.shell.Converter;
+import com.liferay.cli.shell.MethodTarget;
+import com.liferay.cli.support.DisplayName;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -9,14 +14,10 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import com.liferay.cli.shell.Completion;
-import com.liferay.cli.shell.Converter;
-import com.liferay.cli.shell.MethodTarget;
-
 /**
  * A simple {@link Converter} for those classes which provide public static
  * fields to represent possible textual values.
- * 
+ *
  * @author Stefan Schmidt
  * @author Ben Alex
  * @since 1.0
@@ -35,7 +36,16 @@ public class StaticFieldConverterImpl implements StaticFieldConverter {
         for (final Field field : clazz.getFields()) {
             final int modifier = field.getModifiers();
             if (Modifier.isStatic(modifier) && Modifier.isPublic(modifier)) {
-                ffields.put(field.getName(), field);
+                String fieldName = field.getName();
+
+                DisplayName displayName = field.getAnnotation( DisplayName.class );
+
+                if( displayName != null )
+                {
+                    fieldName = displayName.value();
+                }
+
+                ffields.put(fieldName, field);
             }
         }
         Validate.notEmpty(ffields,
@@ -56,7 +66,11 @@ public class StaticFieldConverterImpl implements StaticFieldConverter {
         if (f == null) {
             // Fallback to case insensitive search
             for (final Field candidate : ffields.values()) {
-                if (candidate.getName().equalsIgnoreCase(value)) {
+                DisplayName displayName = candidate.getAnnotation( DisplayName.class );
+
+                if( candidate.getName().equalsIgnoreCase( value ) ||
+                    ( displayName != null && displayName.value().equalsIgnoreCase( value ) ) )
+                {
                     f = candidate;
                     break;
                 }

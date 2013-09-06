@@ -46,7 +46,7 @@ public class DefaultShellSettingsProvider implements ShellSettingsProvider, Comm
         return null;
     }
 
-    @CliCommand( value = "shell setting", help = "Change Ray's shell settings" )
+    @CliCommand( value = "setting", help = "Change Ray's shell settings" )
     public void changeSetting(
         @CliOption( key = "mode", mandatory = false, help = "Ray's interactive mode" ) final ShellMode mode )
         throws Exception

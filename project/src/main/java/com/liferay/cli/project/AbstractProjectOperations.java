@@ -4,6 +4,16 @@ import static com.liferay.cli.project.DependencyScope.COMPILE;
 import static com.liferay.cli.support.util.AnsiEscapeCode.FG_CYAN;
 import static com.liferay.cli.support.util.AnsiEscapeCode.decorate;
 
+import com.liferay.cli.metadata.MetadataService;
+import com.liferay.cli.model.JavaPackage;
+import com.liferay.cli.process.manager.FileManager;
+import com.liferay.cli.project.maven.Pom;
+import com.liferay.cli.shell.Shell;
+import com.liferay.cli.support.util.CollectionUtils;
+import com.liferay.cli.support.util.DomUtils;
+import com.liferay.cli.support.util.XmlElementBuilder;
+import com.liferay.cli.support.util.XmlUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,23 +30,13 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.apache.felix.scr.annotations.ReferenceStrategy;
-import com.liferay.cli.metadata.MetadataService;
-import com.liferay.cli.model.JavaPackage;
-import com.liferay.cli.process.manager.FileManager;
-import com.liferay.cli.shell.Shell;
-import com.liferay.cli.support.util.CollectionUtils;
-import com.liferay.cli.support.util.DomUtils;
-import com.liferay.cli.support.util.XmlElementBuilder;
-import com.liferay.cli.support.util.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.liferay.cli.project.maven.Pom;
 
 /**
  * Provides common project operations. Should be subclassed by a
  * project-specific operations subclass.
- * 
+ *
  * @author Ben Alex
  * @author Adrian Colyer
  * @author Stefan Schmidt
@@ -56,7 +56,7 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
 
     /**
      * Generates a message about the addition of the given items to the POM
-     * 
+     *
      * @param action the past tense of the action that was performed
      * @param items the items that were acted upon (required, can be empty)
      * @param singular the singular of this type of item (required)
@@ -76,7 +76,7 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
 
     /**
      * Highlights the given text
-     * 
+     *
      * @param text the text to highlight (can be blank)
      * @return the highlighted text
      */
@@ -88,7 +88,7 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
 
     @Reference FileManager fileManager;
     @Reference MetadataService metadataService;
-    @Reference PathResolver pathResolver;
+    @Reference protected PathResolver pathResolver;
 
     @Reference protected PomManagementService pomManagementService;
     @Reference protected Shell shell;
@@ -810,7 +810,7 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
     /**
      * Removes an element identified by the given dependency, whenever it occurs
      * at the given path
-     * 
+     *
      * @param moduleName the name of the module to remove the dependency from
      * @param dependency the dependency to remove
      * @param containingPath the path to the dependencies element
