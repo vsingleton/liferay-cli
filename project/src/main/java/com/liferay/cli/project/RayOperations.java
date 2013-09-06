@@ -7,16 +7,17 @@ import com.liferay.cli.model.JavaPackage;
  *
  * @author Gregory Amerson
  */
-public interface RayOperations extends ProjectOperations {
+public interface RayOperations extends ProjectOperations
+{
 
     /**
      * Creates a Maven-based project
      *
-     * @param topLevelPackage the top-level Java package (required)
-     * @param projectName the name of the project (can be blank to generate it
-     *            from the top-level package)
+     * @param topLevelPackage the top-level Java package (optional)
+     * @param projectName the name of the project (can be blank to generate it from the directory name or
+     *                    top level package)
      */
-    void createProject(JavaPackage topLevelPackage, String projectName);
+    void createProject( String projectName, JavaPackage topLevelPackage );
 
 
     /**

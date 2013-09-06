@@ -2,10 +2,11 @@ package com.liferay.cli.project;
 
 import com.liferay.cli.model.JavaPackage;
 import com.liferay.cli.process.manager.ProcessManager;
-import com.liferay.cli.project.packaging.JarPackaging;
 import com.liferay.cli.project.packaging.PackagingProvider;
 import com.liferay.cli.project.packaging.PackagingProviderRegistry;
+import com.liferay.cli.project.packaging.PomPackaging;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
@@ -25,11 +26,32 @@ public class RayOperationsImpl extends AbstractProjectOperations implements RayO
     @Reference private PackagingProviderRegistry packagingProviderRegistry;
     @Reference private ProcessManager processManager;
 
-    public void createProject( final JavaPackage topLevelPackage, final String projectName )
+    public void createProject( final String projectName, final JavaPackage topLevelPackage )
     {
-        PackagingProvider packagingProvider = packagingProviderRegistry.getPackagingProvider( JarPackaging.NAME );
+        PackagingProvider packagingProvider = packagingProviderRegistry.getPackagingProvider( PomPackaging.NAME );
         Validate.isTrue( isCreateProjectAvailable(), "Project creation is unavailable at this time" );
-        packagingProvider.createArtifacts( topLevelPackage, projectName, getJavaVersion( 6 ), null, "", this );
+
+        String finalProjectName = projectName;
+
+        if( StringUtils.isEmpty( finalProjectName ) )
+        {
+            finalProjectName = "RayDemo";
+        }
+
+
+        JavaPackage javaPackage = topLevelPackage;
+
+        if( javaPackage == null )
+        {
+            javaPackage = new JavaPackage( getDefaultJavaPackageFromProjectName(projectName) );
+        }
+
+        packagingProvider.createArtifacts( javaPackage, projectName, getJavaVersion( 6 ), null, "", this );
+    }
+
+    private String getDefaultJavaPackageFromProjectName( String projectName )
+    {
+        return projectName.replaceAll( "\\s+", "." ).toLowerCase();
     }
 
     /**

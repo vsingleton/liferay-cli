@@ -25,14 +25,16 @@ public class RayCommands implements CommandMarker {
 
     @CliCommand( value = PROJECT_COMMAND, help = "Creates a new Liferay project" )
     public void createProject(
-        @CliOption( key = { "", "topLevelPackage" },
-                    mandatory = true,
-                    optionContext = "update",
-                    help = "The uppermost package name (this becomes the <groupId> in Maven and also the '~' value when using Ray's shell)" ) final JavaPackage topLevelPackage,
-        @CliOption( key = "projectName",
-                    help = "The name of the project (last segment of package name used as default)" ) final String projectName )
+        @CliOption(
+            key = { "", "projectName" },
+            help = "The name of the project (last segment of package name used as default)" ) final String projectName,
+        @CliOption(
+            key = { "topLevelPackage" },
+            mandatory = false,
+            optionContext = "update",
+            help = "The uppermost package name (this becomes the <groupId> in Maven and also the '~' value when using Ray's shell)" ) final JavaPackage topLevelPackage )
     {
-        rayOperations.createProject( topLevelPackage, projectName );
+        rayOperations.createProject( projectName, topLevelPackage );
     }
 
     @CliAvailabilityIndicator(PROJECT_COMMAND)
