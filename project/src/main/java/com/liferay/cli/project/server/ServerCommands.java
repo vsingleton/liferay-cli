@@ -1,6 +1,7 @@
 
 package com.liferay.cli.project.server;
 
+import com.liferay.cli.shell.CliAvailabilityIndicator;
 import com.liferay.cli.shell.CliCommand;
 import com.liferay.cli.shell.CliOption;
 import com.liferay.cli.shell.CommandMarker;
@@ -20,10 +21,10 @@ import org.osgi.service.component.ComponentContext;
 @Service
 public class ServerCommands implements CommandMarker
 {
-
     private static final String SERVER_SETUP_COMMAND = "server setup";
 
-    @Reference private StaticFieldConverter staticFieldConverter;
+    @Reference
+    private StaticFieldConverter staticFieldConverter;
 
     protected void activate(final ComponentContext context)
     {
@@ -61,6 +62,12 @@ public class ServerCommands implements CommandMarker
         final ServerEdition serverEdition )
     {
         serverOperations.serverSetup( serverType, serverVersion, serverEdition );
+    }
+
+    @CliAvailabilityIndicator( SERVER_SETUP_COMMAND )
+    public boolean isServerSetupAvailable()
+    {
+        return serverOperations.isServerSetupAvailable();
     }
 
 }

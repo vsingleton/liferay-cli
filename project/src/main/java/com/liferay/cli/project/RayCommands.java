@@ -37,8 +37,10 @@ public class RayCommands implements CommandMarker {
         rayOperations.createProject( projectName, topLevelPackage );
     }
 
-    @CliAvailabilityIndicator(PROJECT_COMMAND)
-    public boolean isCreateProjectAvailable() {
+    @CliAvailabilityIndicator( PROJECT_COMMAND )
+    public boolean isCreateProjectAvailable()
+    {
         return rayOperations.isCreateProjectAvailable();
     }
+
 }

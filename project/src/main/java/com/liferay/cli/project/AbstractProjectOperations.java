@@ -64,7 +64,7 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
      * @return a non-<code>null</code> message
      * @since 1.2.0
      */
-    static String getDescriptionOfChange(final String action,
+    protected static String getDescriptionOfChange(final String action,
             final Collection<String> items, final String singular,
             final String plural) {
         if (items.isEmpty()) {
@@ -86,7 +86,7 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
 
     private final Map<String, Feature> features = new HashMap<String, Feature>();
 
-    @Reference FileManager fileManager;
+    @Reference protected FileManager fileManager;
     @Reference MetadataService metadataService;
     @Reference protected PathResolver pathResolver;
 
@@ -525,6 +525,13 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
 
     public String getFocusedModuleName() {
         return pomManagementService.getFocusedModuleName();
+    }
+
+    public String getRootName()
+    {
+        Pom rootPom = pomManagementService.getRootPom();
+
+        return rootPom != null ? rootPom.getArtifactId() : null;
     }
 
     public ProjectMetadata getFocusedProjectMetadata() {

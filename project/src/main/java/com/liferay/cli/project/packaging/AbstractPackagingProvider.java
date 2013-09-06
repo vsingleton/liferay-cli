@@ -1,5 +1,17 @@
 package com.liferay.cli.project.packaging;
 
+import com.liferay.cli.model.JavaPackage;
+import com.liferay.cli.process.manager.FileManager;
+import com.liferay.cli.project.ApplicationContextOperations;
+import com.liferay.cli.project.GAV;
+import com.liferay.cli.project.Path;
+import com.liferay.cli.project.PathResolver;
+import com.liferay.cli.project.ProjectOperations;
+import com.liferay.cli.support.logging.HandlerUtils;
+import com.liferay.cli.support.util.DomUtils;
+import com.liferay.cli.support.util.FileUtils;
+import com.liferay.cli.support.util.XmlUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,26 +24,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
-import com.liferay.cli.model.JavaPackage;
-import com.liferay.cli.process.manager.FileManager;
-import com.liferay.cli.support.logging.HandlerUtils;
-import com.liferay.cli.support.util.DomUtils;
-import com.liferay.cli.support.util.FileUtils;
-import com.liferay.cli.support.util.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.liferay.cli.project.ApplicationContextOperations;
-import com.liferay.cli.project.GAV;
-import com.liferay.cli.project.Path;
-import com.liferay.cli.project.PathResolver;
-import com.liferay.cli.project.ProjectOperations;
-
 /**
  * Convenient superclass for core or third-party addons to implement a
  * {@link PackagingProvider}. Uses the "Template Method" GoF pattern.
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -58,7 +58,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
 
     /**
      * Constructor
-     * 
+     *
      * @param id the unique ID of this packaging type, see
      *            {@link PackagingProvider#getId()}
      * @param name the name of this type of packaging as used in the POM
@@ -80,12 +80,18 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
         this.pomTemplate = pomTemplate;
     }
 
-    public String createArtifacts(final JavaPackage topLevelPackage,
-            final String nullableProjectName, final String javaVersion,
-            final GAV parentPom, final String module,
+    public String createArtifacts(final JavaPackage topLevelPackage, final String nullableProjectName,
+        final String javaVersion, final GAV parentPom, final String module, final ProjectOperations projectOperations)
+    {
+        return createArtifacts( topLevelPackage, nullableProjectName, nullableProjectName, javaVersion, parentPom,
+            module, projectOperations );
+    }
+
+    public String createArtifacts(final JavaPackage topLevelPackage, final String nullableProjectName,
+            final String artifactId, final String javaVersion, final GAV parentPom, final String module,
             final ProjectOperations projectOperations) {
         final String pomPath = createPom(topLevelPackage, nullableProjectName,
-                javaVersion, parentPom, module, projectOperations);
+                artifactId, javaVersion, parentPom, module, projectOperations);
         createOtherArtifacts(topLevelPackage, module, projectOperations);
         return pomPath;
     }
@@ -97,7 +103,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
      * <p>
      * This implementation sets up the Log4j configuration file for the root
      * module.
-     * 
+     *
      * @param topLevelPackage
      * @param module the unqualified name of the module being created (empty
      *            means the root or only module)
@@ -109,6 +115,12 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
         if (StringUtils.isBlank(module)) {
             setUpLog4jConfiguration();
         }
+    }
+
+    protected String createPom(final JavaPackage topLevelPackage, final String projectName,
+        final String javaVersion, final GAV parentPom, final String module, final ProjectOperations projectOperations)
+    {
+        return createPom( topLevelPackage, projectName, projectName, javaVersion, parentPom, module, projectOperations );
     }
 
     /**
@@ -126,10 +138,11 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
      * </ul>
      * This method makes as few assumptions about the POM template as possible,
      * to make life easier for anyone writing a {@link PackagingProvider}.
-     * 
+     *
      * @param topLevelPackage the new project or module's top-level Java package
      *            (required)
      * @param projectName the project name provided by the user (can be blank)
+     * @param artifactId the artifactId for project
      * @param javaVersion the Java version to substitute into the POM (required)
      * @param parentPom the Maven coordinates of the parent POM (can be
      *            <code>null</code>)
@@ -139,9 +152,8 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
      *            dependency
      * @return the path of the newly created POM
      */
-    protected String createPom(final JavaPackage topLevelPackage,
-            final String projectName, final String javaVersion,
-            final GAV parentPom, final String module,
+    protected String createPom(final JavaPackage topLevelPackage, final String projectName, final String artifactId,
+            final String javaVersion, final GAV parentPom, final String module,
             final ProjectOperations projectOperations) {
         Validate.notBlank(javaVersion, "Java version required");
         Validate.notNull(topLevelPackage, "Top level package required");
@@ -168,8 +180,8 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
         setGroupIdAndParent(getGroupId(topLevelPackage), parentPom, root, pom);
 
         // artifactId
-        final String artifactId = getArtifactId(projectName, module,
-                topLevelPackage);
+//        final String artifactId = getArtifactId(projectName, module,
+//                topLevelPackage);
         Validate.notBlank(artifactId, "Maven artifactIds cannot be blank");
         DomUtils.createChildIfNotExists("artifactId", root, pom)
                 .setTextContent(artifactId.trim());
@@ -207,7 +219,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
      * <code>&lt;artifactId&gt;</code> element. This implementation simply
      * delegates to {@link #getProjectName}. Subclasses can override this method
      * to use a different strategy.
-     * 
+     *
      * @param nullableProjectName the project name entered by the user (can be
      *            blank)
      * @param module the name of the module being created (blank for the root
@@ -224,7 +236,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
     /**
      * Returns the fully-qualified name of the given module, relative to the
      * currently focused module.
-     * 
+     *
      * @param moduleName can be blank for the root or only module
      * @param projectOperations
      * @return
@@ -246,7 +258,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
      * Returns the groupId of the project or module being created. This
      * implementation simply uses the fully-qualified name of the given Java
      * package. Subclasses can override this method to use a different strategy.
-     * 
+     *
      * @param topLevelPackage the new project or module's top-level Java package
      *            (required)
      * @return
@@ -262,7 +274,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
     /**
      * Returns the package-relative path to this {@link PackagingProvider}'s POM
      * template.
-     * 
+     *
      * @return a non-blank path
      */
     String getPomTemplate() {
@@ -274,7 +286,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
      * element. This implementation uses the given project name if not blank,
      * otherwise the last element of the given Java package. Subclasses can
      * override this method to use a different strategy.
-     * 
+     *
      * @param nullableProjectName the project name entered by the user (can be
      *            blank)
      * @param module the name of the module being created (blank for the root
@@ -293,7 +305,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
 
     /**
      * Sets the Maven groupIds of the parent and/or project as necessary
-     * 
+     *
      * @param projectGroupId the project's groupId (required)
      * @param parentPom the Maven coordinates of the parent POM (can be
      *            <code>null</code>)
@@ -339,7 +351,7 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
      * {@value #ROO_PACKAGING_PROVIDER_PROPERTY}. Subclasses can override this
      * method, but be aware that Roo needs some way of working out from a given
      * <code>pom.xml</code> file which {@link PackagingProvider} should be used.
-     * 
+     *
      * @param pom the DOM document for the POM being created
      */
     protected void setPackagingProviderId(final Document pom) {

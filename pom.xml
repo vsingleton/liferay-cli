@@ -22,13 +22,13 @@
         <module>shell-jline-osgi</module>
         <module>felix</module>
         <module>model</module>
-		<module>metadata</module>
-		<module>file-undo</module>
+	<module>metadata</module>
+	<module>file-undo</module>
         <module>file-monitor</module>
         <module>file-monitor-polling</module>
         <module>file-monitor-polling-ray</module>
         <module>project</module>
-		<module>process-manager</module>
+	<module>process-manager</module>
 	</modules>
     <organization>
         <name>Liferay, Inc</name>
