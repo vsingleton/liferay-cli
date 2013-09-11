@@ -9,7 +9,7 @@
     </parent>
     <artifactId>com.liferay.cli.file.monitor.polling.ray</artifactId>
     <packaging>bundle</packaging>
-    <name>Liferay CLI - File Monitor - Polling (Ray Launcher)</name>
+    <name>Liferay CLI - File Monitor Polling (Ray Launcher)</name>
     <dependencies>
         <!-- OSGi -->
         <dependency>

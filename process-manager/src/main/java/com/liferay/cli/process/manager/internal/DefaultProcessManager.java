@@ -1,5 +1,17 @@
 package com.liferay.cli.process.manager.internal;
 
+import com.liferay.cli.file.monitor.FileMonitorService;
+import com.liferay.cli.file.monitor.MonitoringRequest;
+import com.liferay.cli.file.monitor.NotifiableFileMonitorService;
+import com.liferay.cli.file.undo.UndoManager;
+import com.liferay.cli.process.manager.ActiveProcessManager;
+import com.liferay.cli.process.manager.CommandCallback;
+import com.liferay.cli.process.manager.ProcessManager;
+import com.liferay.cli.process.manager.event.AbstractProcessManagerStatusPublisher;
+import com.liferay.cli.process.manager.event.ProcessManagerStatus;
+import com.liferay.cli.support.logging.HandlerUtils;
+import com.liferay.cli.support.osgi.OSGiUtils;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,22 +26,10 @@ import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.startlevel.StartLevel;
-import com.liferay.cli.file.monitor.FileMonitorService;
-import com.liferay.cli.file.monitor.MonitoringRequest;
-import com.liferay.cli.file.monitor.NotifiableFileMonitorService;
-import com.liferay.cli.file.undo.UndoManager;
-import com.liferay.cli.support.logging.HandlerUtils;
-import com.liferay.cli.support.osgi.OSGiUtils;
-
-import com.liferay.cli.process.manager.ActiveProcessManager;
-import com.liferay.cli.process.manager.CommandCallback;
-import com.liferay.cli.process.manager.ProcessManager;
-import com.liferay.cli.process.manager.event.AbstractProcessManagerStatusPublisher;
-import com.liferay.cli.process.manager.event.ProcessManagerStatus;
 
 /**
  * Default implementation of {@link ProcessManager} interface.
- * 
+ *
  * @author Ben Alex
  * @since 1.0
  */
@@ -168,7 +168,7 @@ public class DefaultProcessManager extends
     }
 
     protected void activate(final ComponentContext context) {
-        workingDir = OSGiUtils.getRooWorkingDirectory(context);
+        workingDir = OSGiUtils.getRayWorkingDirectory(context);
         context.getBundleContext().addFrameworkListener(
                 new FrameworkListener() {
                     public void frameworkEvent(final FrameworkEvent event) {

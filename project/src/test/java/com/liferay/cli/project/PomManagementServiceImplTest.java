@@ -9,6 +9,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.liferay.cli.file.monitor.FileMonitorService;
+import com.liferay.cli.metadata.MetadataDependencyRegistry;
+import com.liferay.cli.metadata.MetadataService;
+import com.liferay.cli.process.manager.FileManager;
+import com.liferay.cli.project.maven.Pom;
+import com.liferay.cli.project.maven.PomFactory;
+import com.liferay.cli.shell.Shell;
+import com.liferay.cli.support.osgi.OSGiUtils;
+import com.liferay.cli.support.util.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,23 +33,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
-import com.liferay.cli.file.monitor.FileMonitorService;
-import com.liferay.cli.metadata.MetadataDependencyRegistry;
-import com.liferay.cli.metadata.MetadataService;
-import com.liferay.cli.process.manager.FileManager;
-import com.liferay.cli.shell.Shell;
-import com.liferay.cli.support.osgi.OSGiUtils;
-import com.liferay.cli.support.util.FileUtils;
 import org.w3c.dom.Element;
-
-import com.liferay.cli.project.PomManagementServiceImpl;
-import com.liferay.cli.project.ProjectMetadata;
-import com.liferay.cli.project.maven.Pom;
-import com.liferay.cli.project.maven.PomFactory;
 
 /**
  * Unit test of {@link PomManagementServiceImpl}
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -94,9 +92,9 @@ public class PomManagementServiceImplTest {
 
     /**
      * Sets the working directory for the service under test
-     * 
+     *
      * @param relativePath the desired working directory relative to the
-     *            "o.s.r.project" package
+     *            "c.l.c.project" package
      * @throws IOException
      */
     private void setUpWorkingDirectory(final String relativePath)
@@ -106,11 +104,11 @@ public class PomManagementServiceImplTest {
         when(mockComponentContext.getBundleContext()).thenReturn(
                 mockBundleContext);
         final File workingDirectory = new File(
-                "target/test-classes/org/springframework/roo/project",
+                "target/test-classes/com/liferay/cli/project",
                 relativePath);
         when(
                 mockBundleContext
-                        .getProperty(OSGiUtils.ROO_WORKING_DIRECTORY_PROPERTY))
+                        .getProperty(OSGiUtils.RAY_WORKING_DIRECTORY_PROPERTY))
                 .thenReturn(workingDirectory.getCanonicalPath());
         service.activate(mockComponentContext);
     }

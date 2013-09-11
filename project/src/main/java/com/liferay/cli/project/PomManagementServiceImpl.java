@@ -1,5 +1,16 @@
 package com.liferay.cli.project;
 
+import com.liferay.cli.file.monitor.FileMonitorService;
+import com.liferay.cli.metadata.MetadataDependencyRegistry;
+import com.liferay.cli.metadata.MetadataService;
+import com.liferay.cli.process.manager.FileManager;
+import com.liferay.cli.project.maven.Pom;
+import com.liferay.cli.project.maven.PomFactory;
+import com.liferay.cli.shell.Shell;
+import com.liferay.cli.support.osgi.OSGiUtils;
+import com.liferay.cli.support.util.FileUtils;
+import com.liferay.cli.support.util.XmlUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,19 +31,8 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.osgi.service.component.ComponentContext;
-import com.liferay.cli.file.monitor.FileMonitorService;
-import com.liferay.cli.metadata.MetadataDependencyRegistry;
-import com.liferay.cli.metadata.MetadataService;
-import com.liferay.cli.process.manager.FileManager;
-import com.liferay.cli.shell.Shell;
-import com.liferay.cli.support.osgi.OSGiUtils;
-import com.liferay.cli.support.util.FileUtils;
-import com.liferay.cli.support.util.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.liferay.cli.project.maven.Pom;
-import com.liferay.cli.project.maven.PomFactory;
 
 @Component
 @Service
@@ -43,7 +43,7 @@ public class PomManagementServiceImpl implements PomManagementService {
 
         /**
          * Constructor
-         * 
+         *
          * @param pomMap
          */
         private PomComparator(final Map<String, Pom> pomMap) {
@@ -82,14 +82,14 @@ public class PomManagementServiceImpl implements PomManagementService {
 
     protected void activate(final ComponentContext context) {
         final File projectDirectory = new File(StringUtils.defaultIfEmpty(
-                OSGiUtils.getRooWorkingDirectory(context),
+                OSGiUtils.getRayWorkingDirectory(context),
                 FileUtils.CURRENT_DIRECTORY));
         projectRootDirectory = FileUtils.getCanonicalPath(projectDirectory);
     }
 
     /**
      * For test cases to set up the state of this service
-     * 
+     *
      * @param pom the POM to add (required)
      */
     void addPom(final Pom pom) {
@@ -131,7 +131,7 @@ public class PomManagementServiceImpl implements PomManagementService {
                 break;
             }
             startingPoint = StringUtils.removeEnd(startingPoint, SEPARATOR);
-            
+
             if (startingPoint.lastIndexOf(SEPARATOR) < 0) {
             	break;
             }

@@ -6,6 +6,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.liferay.cli.support.osgi.OSGiUtils;
+import com.liferay.cli.support.util.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -14,17 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
-import com.liferay.cli.support.osgi.OSGiUtils;
-import com.liferay.cli.support.util.FileUtils;
-
-import com.liferay.cli.project.DefaultPathResolvingStrategy;
-import com.liferay.cli.project.LogicalPath;
-import com.liferay.cli.project.Path;
-import com.liferay.cli.project.PhysicalPath;
 
 /**
  * Unit test of {@link DefaultPathResolvingStrategy}
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -46,9 +42,9 @@ public class DefaultPathResolvingStrategyTest {
 
     /**
      * Creates a mock {@link ComponentContext} in which the
-     * {@link OSGiUtils#ROO_WORKING_DIRECTORY_PROPERTY} has the given value
-     * 
-     * @param rooWorkingDirectory the desired property value (can be blank)
+     * {@link OSGiUtils#RAY_WORKING_DIRECTORY_PROPERTY} has the given value
+     *
+     * @param rayWorkingDirectory the desired property value (can be blank)
      * @return a non-<code>null</code> mock
      */
     private ComponentContext getMockComponentContext(
@@ -56,7 +52,7 @@ public class DefaultPathResolvingStrategyTest {
         final BundleContext mockBundleContext = mock(BundleContext.class);
         when(
                 mockBundleContext
-                        .getProperty(OSGiUtils.ROO_WORKING_DIRECTORY_PROPERTY))
+                        .getProperty(OSGiUtils.RAY_WORKING_DIRECTORY_PROPERTY))
                 .thenReturn(rooWorkingDirectory);
         final ComponentContext mockComponentContext = mock(ComponentContext.class);
         when(mockComponentContext.getBundleContext()).thenReturn(

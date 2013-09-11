@@ -26,9 +26,9 @@ public final class OSGiUtils {
     private static final PathMatcher PATH_MATCHER = new AntPathMatcher();
 
     /**
-     * The name of the property that stores the Roo working directory.
+     * The name of the property that stores the Ray working directory.
      */
-    public static final String ROO_WORKING_DIRECTORY_PROPERTY = "ray.working.directory";
+    public static final String RAY_WORKING_DIRECTORY_PROPERTY = "ray.working.directory";
 
     /**
      * The root path within an OSGi bundle
@@ -160,10 +160,10 @@ public final class OSGiUtils {
      * @return the path of the Roo working directory
      * @since 1.2.0
      */
-    public static String getRooWorkingDirectory(
+    public static String getRayWorkingDirectory(
             final ComponentContext componentContext) {
         return componentContext.getBundleContext().getProperty(
-                ROO_WORKING_DIRECTORY_PROPERTY);
+                RAY_WORKING_DIRECTORY_PROPERTY);
     }
 
     /**

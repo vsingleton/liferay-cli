@@ -2,6 +2,10 @@ package com.liferay.cli.project;
 
 import static com.liferay.cli.support.util.FileUtils.CURRENT_DIRECTORY;
 
+import com.liferay.cli.file.monitor.event.FileDetails;
+import com.liferay.cli.support.osgi.OSGiUtils;
+import com.liferay.cli.support.util.FileUtils;
+
 import java.io.File;
 import java.util.Collection;
 
@@ -9,13 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.felix.scr.annotations.Component;
 import org.osgi.service.component.ComponentContext;
-import com.liferay.cli.file.monitor.event.FileDetails;
-import com.liferay.cli.support.osgi.OSGiUtils;
-import com.liferay.cli.support.util.FileUtils;
 
 /**
  * Convenient superclass for {@link PathResolvingStrategy} implementations.
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -31,7 +32,7 @@ public abstract class AbstractPathResolvingStrategy implements
 
     protected void activate(final ComponentContext context) {
         final File projectDirectory = new File(StringUtils.defaultIfEmpty(
-                OSGiUtils.getRooWorkingDirectory(context), CURRENT_DIRECTORY));
+                OSGiUtils.getRayWorkingDirectory(context), CURRENT_DIRECTORY));
         rootPath = FileUtils.getCanonicalPath(projectDirectory);
     }
 
@@ -62,7 +63,7 @@ public abstract class AbstractPathResolvingStrategy implements
 
     /**
      * Obtains the {@link Path}s.
-     * 
+     *
      * @param requireSource <code>true</code> to return only paths containing
      *            Java source code, or <code>false</code> to return all paths
      * @return the matching paths (never <code>null</code>)

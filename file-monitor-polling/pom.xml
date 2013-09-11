@@ -9,7 +9,7 @@
     </parent>
     <artifactId>com.liferay.cli.file.monitor.polling</artifactId>
     <packaging>bundle</packaging>
-    <name>Liferay CLI - File Monitor - Polling</name>
+    <name>Liferay CLI - File Monitor Polling</name>
     <dependencies>
         <!-- Roo -->
         <dependency>

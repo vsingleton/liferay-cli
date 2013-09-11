@@ -1,6 +1,6 @@
 package com.liferay.cli.support.osgi;
 
-import static com.liferay.cli.support.osgi.OSGiUtils.ROO_WORKING_DIRECTORY_PROPERTY;
+import static com.liferay.cli.support.osgi.OSGiUtils.RAY_WORKING_DIRECTORY_PROPERTY;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -9,33 +9,31 @@ import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 
-import com.liferay.cli.support.osgi.OSGiUtils;
-
 /**
  * Unit test of {@link OSGiUtils}
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
 public class OSGiUtilsTest {
 
-    private static final String ROO_WORKING_DIRECTORY = "/some/file/path";
+    private static final String RAY_WORKING_DIRECTORY = "/some/file/path";
 
     @Test
     public void testGetRooWorkingDirectory() {
         // Set up
         final BundleContext mockBundleContext = mock(BundleContext.class);
-        when(mockBundleContext.getProperty(ROO_WORKING_DIRECTORY_PROPERTY))
-                .thenReturn(ROO_WORKING_DIRECTORY);
+        when(mockBundleContext.getProperty(RAY_WORKING_DIRECTORY_PROPERTY))
+                .thenReturn(RAY_WORKING_DIRECTORY);
         final ComponentContext mockComponentContext = mock(ComponentContext.class);
         when(mockComponentContext.getBundleContext()).thenReturn(
                 mockBundleContext);
 
         // Invoke
-        final String rooWorkingDirectory = OSGiUtils
-                .getRooWorkingDirectory(mockComponentContext);
+        final String rayWorkingDirectory = OSGiUtils
+                .getRayWorkingDirectory(mockComponentContext);
 
         // Check
-        assertEquals(ROO_WORKING_DIRECTORY, rooWorkingDirectory);
+        assertEquals(RAY_WORKING_DIRECTORY, rayWorkingDirectory);
     }
 }

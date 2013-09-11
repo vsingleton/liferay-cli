@@ -36,7 +36,7 @@ public class KeyType implements Comparable<KeyType>
 
     public String getDisplayName()
     {
-        return getKey();
+        return getKey().toLowerCase();
     }
 
     public String getKey()
