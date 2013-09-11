@@ -25,7 +25,7 @@ public class PomPackaging extends AbstractCorePackagingProvider {
      * Constructor
      */
     public PomPackaging() {
-        super("pom", "parent-pom-template.xml");
+        super(NAME, NAME, "parent-pom-template.xml");
     }
 
     @Override

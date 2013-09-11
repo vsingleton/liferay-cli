@@ -1,5 +1,14 @@
 package com.liferay.cli.project;
 
+import com.liferay.cli.model.JavaPackage;
+import com.liferay.cli.process.manager.ActiveProcessManager;
+import com.liferay.cli.process.manager.ProcessManager;
+import com.liferay.cli.project.packaging.PackagingProvider;
+import com.liferay.cli.project.packaging.PackagingProviderRegistry;
+import com.liferay.cli.support.logging.HandlerUtils;
+import com.liferay.cli.support.util.DomUtils;
+import com.liferay.cli.support.util.XmlUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,21 +21,12 @@ import org.apache.commons.lang3.Validate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
-import com.liferay.cli.model.JavaPackage;
-import com.liferay.cli.process.manager.ActiveProcessManager;
-import com.liferay.cli.process.manager.ProcessManager;
-import com.liferay.cli.support.logging.HandlerUtils;
-import com.liferay.cli.support.util.DomUtils;
-import com.liferay.cli.support.util.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.liferay.cli.project.packaging.PackagingProvider;
-import com.liferay.cli.project.packaging.PackagingProviderRegistry;
-
 /**
  * Implementation of {@link MavenOperations}.
- * 
+ *
  * @author Ben Alex
  * @author Alan Stewart
  * @since 1.0
@@ -42,7 +42,7 @@ public class MavenOperationsImpl extends AbstractProjectOperations implements
 
         /**
          * Constructor
-         * 
+         *
          * @param inputStream
          * @param processManager
          */
@@ -85,7 +85,8 @@ public class MavenOperationsImpl extends AbstractProjectOperations implements
     private static final Logger LOGGER = HandlerUtils
             .getLogger(MavenOperationsImpl.class);
 
-    @Reference private PackagingProviderRegistry packagingProviderRegistry;
+    @Reference
+    protected PackagingProviderRegistry packagingProviderRegistry;
     @Reference private ProcessManager processManager;
 
     private void addModuleDeclaration(final String moduleName,
@@ -171,7 +172,7 @@ public class MavenOperationsImpl extends AbstractProjectOperations implements
 
     /**
      * Returns the project's target Java version in POM format
-     * 
+     *
      * @param majorJavaVersion the major version provided by the user; can be
      *            <code>null</code> to auto-detect it
      * @return a non-blank string

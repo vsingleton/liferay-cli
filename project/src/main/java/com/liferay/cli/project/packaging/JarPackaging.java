@@ -6,20 +6,20 @@ import static com.liferay.cli.project.Path.SRC_MAIN_RESOURCES;
 import static com.liferay.cli.project.Path.SRC_TEST_JAVA;
 import static com.liferay.cli.project.Path.SRC_TEST_RESOURCES;
 
+import com.liferay.cli.model.JavaPackage;
+import com.liferay.cli.project.GAV;
+import com.liferay.cli.project.Path;
+import com.liferay.cli.project.ProjectOperations;
+
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
-import com.liferay.cli.model.JavaPackage;
-
-import com.liferay.cli.project.GAV;
-import com.liferay.cli.project.Path;
-import com.liferay.cli.project.ProjectOperations;
 
 /**
  * The {@link PackagingProvider} that creates a JAR file.
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -33,7 +33,7 @@ public class JarPackaging extends AbstractCorePackagingProvider {
      * Constructor invoked by the OSGi container
      */
     public JarPackaging() {
-        super(NAME, "jar-pom-template.xml");
+        super(NAME, NAME, "jar-pom-template.xml");
     }
 
     @Override

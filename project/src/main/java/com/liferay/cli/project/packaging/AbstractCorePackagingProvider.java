@@ -5,7 +5,7 @@ import org.w3c.dom.Document;
 /**
  * A {@link PackagingProvider} provided by Spring Roo, i.e. not by a third-party
  * addon.
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -14,7 +14,7 @@ abstract class AbstractCorePackagingProvider extends AbstractPackagingProvider
 
     /**
      * Constructor
-     * 
+     *
      * @param name the name of this type of packaging as used in the POM
      *            (required)
      * @param pomTemplate the path of this packaging type's POM template,
@@ -24,7 +24,7 @@ abstract class AbstractCorePackagingProvider extends AbstractPackagingProvider
      *            artifactId, and version elements; this parent element will be
      *            removed if not required
      */
-    protected AbstractCorePackagingProvider(final String name,
+    protected AbstractCorePackagingProvider(final String id, final String name,
             final String pomTemplate) {
         /*
          * Core instances use the Maven packaging name as the ID so that the
@@ -32,7 +32,7 @@ abstract class AbstractCorePackagingProvider extends AbstractPackagingProvider
          * they implement their own packaging types, they can name them with any
          * other name that makes sense to them.
          */
-        super(name, name, pomTemplate);
+        super(id, name, pomTemplate);
     }
 
     public boolean isDefault() {

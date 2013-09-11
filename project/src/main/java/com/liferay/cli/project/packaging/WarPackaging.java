@@ -6,20 +6,20 @@ import static com.liferay.cli.project.Path.SRC_MAIN_WEBAPP;
 import static com.liferay.cli.project.Path.SRC_TEST_JAVA;
 import static com.liferay.cli.project.Path.SRC_TEST_RESOURCES;
 
+import com.liferay.cli.model.JavaPackage;
+import com.liferay.cli.project.Path;
+import com.liferay.cli.project.ProjectOperations;
+
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
-import com.liferay.cli.model.JavaPackage;
-
-import com.liferay.cli.project.Path;
-import com.liferay.cli.project.ProjectOperations;
 
 /**
  * The core {@link PackagingProvider} for web modules.
- * 
+ *
  * @author Andrew Swan
  * @since 1.2.0
  */
@@ -27,8 +27,10 @@ import com.liferay.cli.project.ProjectOperations;
 @Service
 public class WarPackaging extends AbstractCorePackagingProvider {
 
+    public static final String NAME = "war";
+
     public WarPackaging() {
-        super("war", "war-pom-template.xml");
+        super(NAME, NAME, "war-pom-template.xml");
     }
 
     @Override
