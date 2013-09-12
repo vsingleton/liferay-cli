@@ -1,19 +1,15 @@
 package com.liferay.cli.project.packaging;
 
-import static com.liferay.cli.project.Path.SPRING_CONFIG_ROOT;
 import static com.liferay.cli.project.Path.SRC_MAIN_JAVA;
 import static com.liferay.cli.project.Path.SRC_MAIN_WEBAPP;
 import static com.liferay.cli.project.Path.SRC_TEST_JAVA;
 import static com.liferay.cli.project.Path.SRC_TEST_RESOURCES;
 
-import com.liferay.cli.model.JavaPackage;
 import com.liferay.cli.project.Path;
-import com.liferay.cli.project.ProjectOperations;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -33,21 +29,7 @@ public class WarPackaging extends AbstractCorePackagingProvider {
         super(NAME, NAME, "war-pom-template.xml");
     }
 
-    @Override
-    protected void createOtherArtifacts(final JavaPackage topLevelPackage,
-            final String module, final ProjectOperations projectOperations) {
-        super.createOtherArtifacts(topLevelPackage, module, projectOperations);
-        if (StringUtils.isBlank(module)) {
-            // This is a single-module web project
-            final String fullyQualifiedModuleName = getFullyQualifiedModuleName(
-                    module, projectOperations);
-            applicationContextOperations.createMiddleTierApplicationContext(
-                    topLevelPackage, fullyQualifiedModuleName);
-        }
-    }
-
     public Collection<Path> getPaths() {
-        return Arrays.asList(SRC_MAIN_JAVA, SRC_TEST_JAVA, SRC_TEST_RESOURCES,
-                SPRING_CONFIG_ROOT, SRC_MAIN_WEBAPP);
+        return Arrays.asList(SRC_MAIN_JAVA, SRC_TEST_JAVA, SRC_TEST_RESOURCES, SRC_MAIN_WEBAPP);
     }
 }

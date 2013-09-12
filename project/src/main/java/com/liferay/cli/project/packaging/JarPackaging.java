@@ -1,6 +1,5 @@
 package com.liferay.cli.project.packaging;
 
-import static com.liferay.cli.project.Path.SPRING_CONFIG_ROOT;
 import static com.liferay.cli.project.Path.SRC_MAIN_JAVA;
 import static com.liferay.cli.project.Path.SRC_MAIN_RESOURCES;
 import static com.liferay.cli.project.Path.SRC_TEST_JAVA;
@@ -37,17 +36,6 @@ public class JarPackaging extends AbstractCorePackagingProvider {
     }
 
     @Override
-    protected void createOtherArtifacts(final JavaPackage topLevelPackage,
-            final String module, final ProjectOperations projectOperations) {
-
-        super.createOtherArtifacts(topLevelPackage, module, projectOperations);
-        final String fullyQualifiedModuleName = getFullyQualifiedModuleName(
-                module, projectOperations);
-        applicationContextOperations.createMiddleTierApplicationContext(
-                topLevelPackage, fullyQualifiedModuleName);
-    }
-
-    @Override
     protected String createPom(final JavaPackage topLevelPackage,
             final String nullableProjectName, final String javaVersion,
             final GAV parentPom, final String moduleName,
@@ -60,8 +48,7 @@ public class JarPackaging extends AbstractCorePackagingProvider {
     }
 
     public Collection<Path> getPaths() {
-        return Arrays.asList(SRC_MAIN_JAVA, SRC_MAIN_RESOURCES, SRC_TEST_JAVA,
-                SRC_TEST_RESOURCES, SPRING_CONFIG_ROOT);
+        return Arrays.asList(SRC_MAIN_JAVA, SRC_MAIN_RESOURCES, SRC_TEST_JAVA, SRC_TEST_RESOURCES);
     }
 
     @Override

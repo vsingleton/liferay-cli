@@ -48,7 +48,7 @@ import org.w3c.dom.Element;
 @Reference(name = "feature", strategy = ReferenceStrategy.EVENT, policy = ReferencePolicy.DYNAMIC, referenceInterface = Feature.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
 public abstract class AbstractProjectOperations implements ProjectOperations {
 
-    static final String ADDED = "added";
+    protected static final String ADDED = "added";
     static final String CHANGED = "changed";
     static final String REMOVED = "removed";
     static final String SKIPPED = "skipped";
@@ -340,6 +340,8 @@ public abstract class AbstractProjectOperations implements ProjectOperations {
             }
         }
     }
+
+
 
     public void addPluginRepositories(final String moduleName,
             final Collection<? extends Repository> repositories) {

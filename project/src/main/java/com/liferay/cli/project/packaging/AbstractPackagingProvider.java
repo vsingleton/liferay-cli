@@ -2,7 +2,6 @@ package com.liferay.cli.project.packaging;
 
 import com.liferay.cli.model.JavaPackage;
 import com.liferay.cli.process.manager.FileManager;
-import com.liferay.cli.project.ApplicationContextOperations;
 import com.liferay.cli.project.GAV;
 import com.liferay.cli.project.Path;
 import com.liferay.cli.project.PathResolver;
@@ -49,7 +48,6 @@ public abstract class AbstractPackagingProvider implements PackagingProvider {
 
     private static final String VERSION_ELEMENT = "version";
 
-    @Reference protected ApplicationContextOperations applicationContextOperations;
     @Reference protected FileManager fileManager;
     @Reference protected PathResolver pathResolver;
     private final String id;

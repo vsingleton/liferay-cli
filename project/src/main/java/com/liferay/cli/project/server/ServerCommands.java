@@ -22,6 +22,7 @@ import org.osgi.service.component.ComponentContext;
 public class ServerCommands implements CommandMarker
 {
     private static final String SERVER_SETUP_COMMAND = "server setup";
+    private static final String SERVER_RUN_COMMAND = "server run";
 
     @Reference
     private StaticFieldConverter staticFieldConverter;
@@ -64,10 +65,22 @@ public class ServerCommands implements CommandMarker
         serverOperations.serverSetup( serverType, serverVersion, serverEdition );
     }
 
+    @CliCommand( value = SERVER_RUN_COMMAND, help = "Runs configured Liferay server" )
+    public void serverRun()
+    {
+        serverOperations.serverRun();
+    }
+
     @CliAvailabilityIndicator( SERVER_SETUP_COMMAND )
     public boolean isServerSetupAvailable()
     {
         return serverOperations.isServerSetupAvailable();
+    }
+
+    @CliAvailabilityIndicator( SERVER_RUN_COMMAND )
+    public boolean isServerRunAvailable()
+    {
+        return serverOperations.isServerRunAvailable();
     }
 
 }

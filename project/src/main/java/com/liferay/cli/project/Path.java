@@ -1,18 +1,18 @@
 package com.liferay.cli.project;
 
+import com.liferay.cli.project.maven.Pom;
+import com.liferay.cli.support.util.FileUtils;
+
 import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import com.liferay.cli.support.util.FileUtils;
-
-import com.liferay.cli.project.maven.Pom;
 
 /**
  * Common file paths used in Maven projects.
  * <p>
  * {@link PathResolver}s can convert these paths to and from physical locations.
- * 
+ *
  * @author Ben Alex
  * @since 1.0
  */
@@ -49,6 +49,11 @@ public enum Path {
     SRC_MAIN_RESOURCES(false, "src/main/resources"),
 
     /**
+     * The module sub-path containing META-INF/services resource files.
+     */
+    SRC_MAIN_SERVICES(false, "src/main/resources/META-INF/services"),
+
+    /**
      * The module sub-path containing web resource files.
      */
     SRC_MAIN_WEBAPP(false, "src/main/webapp"),
@@ -77,7 +82,7 @@ public enum Path {
 
     /**
      * Constructor
-     * 
+     *
      * @param javaSource indicates whether this path contains Java source code
      * @param defaultLocation the location relative to the module's root
      *            directory in which this path is located by default (can't be
@@ -92,7 +97,7 @@ public enum Path {
     /**
      * Returns the default location of this path relative to the module's root
      * directory
-     * 
+     *
      * @return a relative file path, e.g. "src/main/java"
      */
     public String getDefaultLocation() {
@@ -102,7 +107,7 @@ public enum Path {
     /**
      * Returns the {@link PhysicalPath} of this {@link Path} within the module
      * to which the given POM belongs.
-     * 
+     *
      * @param pom the POM of the module in question (required)
      * @return a non-<code>null</code> instance
      */
@@ -119,7 +124,7 @@ public enum Path {
 
     /**
      * Returns the {@link LogicalPath} for this path in the given module
-     * 
+     *
      * @param moduleName can be blank for the root or only module
      * @return a non-<code>null</code> instance
      */
@@ -131,7 +136,7 @@ public enum Path {
      * Returns the physical path of this logical {@link Path} relative to the
      * given POM. This implementation simply delegates to
      * {@link #getDefaultLocation()}; individual enum values can override this.
-     * 
+     *
      * @param pom can be <code>null</code>
      * @return
      */
@@ -142,7 +147,7 @@ public enum Path {
     /**
      * Returns the {@link PhysicalPath} of this {@link Path} within the root
      * module, when no POM exists to customise its location.
-     * 
+     *
      * @param projectDirectory the root directory of the user project
      * @return a non-<code>null</code> instance
      */
@@ -152,7 +157,7 @@ public enum Path {
 
     /**
      * Indicates whether this path contains Java source code
-     * 
+     *
      * @return <code>false</code> if it only contains other types of source
      *         code, e.g. XML config files, JSPX files, property files, etc.
      */

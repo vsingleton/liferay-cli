@@ -19,5 +19,9 @@ public interface ServerOperations extends ProjectOperations
      */
     void serverSetup(ServerType serverType, ServerVersion serverVersion, ServerEdition serverEdition  );
 
+    void serverRun();
+
     boolean isServerSetupAvailable();
+
+    boolean isServerRunAvailable();
 }

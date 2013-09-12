@@ -2,20 +2,28 @@
 package com.liferay.cli.project.server;
 
 import com.liferay.cli.model.JavaPackage;
-import com.liferay.cli.process.manager.ProcessManager;
+import com.liferay.cli.project.Dependency;
 import com.liferay.cli.project.GAV;
 import com.liferay.cli.project.MavenOperationsImpl;
 import com.liferay.cli.project.Path;
 import com.liferay.cli.project.maven.Pom;
+import com.liferay.cli.project.packaging.JarPackaging;
 import com.liferay.cli.project.packaging.PackagingProvider;
 import com.liferay.cli.project.packaging.ServerPackaging;
+import com.liferay.cli.shell.osgi.ExternalConsoleProvider;
+import com.liferay.cli.shell.osgi.ExternalConsoleProviderRegistry;
 import com.liferay.cli.support.logging.HandlerUtils;
 import com.liferay.cli.support.util.DomUtils;
+import com.liferay.cli.support.util.FileUtils;
 import com.liferay.cli.support.util.XmlUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -34,12 +42,14 @@ public class ServerOperationsImpl extends MavenOperationsImpl implements ServerO
     private static final Logger LOGGER = HandlerUtils.getLogger( ServerOperationsImpl.class );
 
     @Reference
-    private ProcessManager processManager;
+    private ExternalConsoleProviderRegistry externalShellProviderRegistry;
 
     @Override
     public void serverSetup( final ServerType serverType, final ServerVersion serverVersion, final ServerEdition serverEdition )
     {
         final Pom rootPom = pomManagementService.getRootPom();
+        final JavaPackage rootTopLevelPackage = new JavaPackage( rootPom.getGroupId() );
+        final GAV parentGAV = new GAV( rootPom.getGroupId(), rootPom.getArtifactId(), rootPom.getVersion() );
         final String rootPath = rootPom.getPath();
 
         final Document rootPomDocument = XmlUtils.readXml( fileManager.getInputStream( rootPath ) );
@@ -63,18 +73,31 @@ public class ServerOperationsImpl extends MavenOperationsImpl implements ServerO
             getDescriptionOfChange(
                 "updated", Collections.singleton( rootPom.getDisplayName() ), "property", "properties" );
 
-        // add <modules> element
+        fileManager.createOrUpdateTextFileIfRequired(
+            pomManagementService.getRootPom().getPath(), XmlUtils.nodeToString( rootPomDocument ), updatedProperties, false );
 
-        GAV parentGAV = new GAV( rootPom.getGroupId(), rootPom.getArtifactId(), rootPom.getVersion() );
-        JavaPackage serverTopLevelPackage = new JavaPackage( rootPom.getGroupId() );
-        String moduleName = "server";
-        String serverArtifactId = rootPom.getArtifactId() + "-server";
+        // add <modules>
+        addLogfixModule( rootPom, rootTopLevelPackage, parentGAV );
 
-        PackagingProvider serverPackagingProvider = packagingProviderRegistry.getPackagingProvider( ServerPackaging.NAME );
+        pomManagementService.setFocusedModule( rootPom );
 
-        createModule( serverTopLevelPackage, parentGAV, moduleName, serverPackagingProvider, 6, serverArtifactId );
+        addServerModule( rootPom, rootTopLevelPackage, parentGAV, serverVersion );
 
-        Pom serverPom = pomManagementService.getPomFromModuleName( moduleName );
+        pomManagementService.setFocusedModule( rootPom );
+
+        fileManager.commit();
+    }
+
+    private void addServerModule( Pom rootPom, JavaPackage rootTopLevelPackage, GAV parentGAV, ServerVersion serverVersion )
+    {
+        final String serverModuleName = "server";
+        final String serverArtifactId = rootPom.getArtifactId() + "-server";
+
+        final PackagingProvider serverPackagingProvider = packagingProviderRegistry.getPackagingProvider( ServerPackaging.NAME );
+
+        createModule( rootTopLevelPackage, parentGAV, serverModuleName, serverPackagingProvider, 6, serverArtifactId );
+
+        final Pom serverPom = pomManagementService.getPomFromModuleName( serverModuleName );
 
         final Document serverPomDocument = XmlUtils.readXml( fileManager.getInputStream( serverPom.getPath() ) );
         final Element serverPomRoot = serverPomDocument.getDocumentElement();
@@ -89,10 +112,79 @@ public class ServerOperationsImpl extends MavenOperationsImpl implements ServerO
             getDescriptionOfChange( "updated", Collections.singleton( serverPom.getDisplayName() ), "property", "properties" );
 
         fileManager.createOrUpdateTextFileIfRequired(
-            pomManagementService.getRootPom().getPath(), XmlUtils.nodeToString( rootPomDocument ), updatedProperties, false );
+            serverPom.getPath(), XmlUtils.nodeToString( serverPomDocument ), updatedServerProperties, false );
+
+        final String logModuleName = "../logfix";
+
+        addModuleDeclaration( logModuleName, serverPomDocument, serverPomRoot );
+        final String addModuleMessage = getDescriptionOfChange(ADDED, Collections.singleton( logModuleName ), "module", "modules");
 
         fileManager.createOrUpdateTextFileIfRequired(
-            serverPom.getPath(), XmlUtils.nodeToString( serverPomDocument ), updatedServerProperties, false );
+            serverPom.getPath(), XmlUtils.nodeToString( serverPomDocument ), addModuleMessage, false );
+
+        GAV plugin = new GAV( "org.apache.tomcat.maven", "tomcat7-maven-plugin", "2.1" );
+        Dependency dep = new Dependency( parentGAV.getGroupId(), parentGAV.getArtifactId() + "-logfix", parentGAV.getVersion() );
+
+        addPluginDependency( serverModuleName, plugin, dep, serverPomDocument, serverPomRoot );
+
+        final String addDepMsg = getDescriptionOfChange(ADDED, Collections.singleton( plugin.getArtifactId() ), "dependency", "dependencies");
+
+        fileManager.createOrUpdateTextFileIfRequired( serverPom.getPath(), XmlUtils.nodeToString( serverPomDocument ), addDepMsg, false);
+    }
+
+    private void addLogfixModule(final Pom rootPom, final JavaPackage rootTopLevelPackage, final GAV parentGAV )
+    {
+     // first module is for fixing slf4j log
+        final PackagingProvider jarPackagingProvider = packagingProviderRegistry.getPackagingProvider( JarPackaging.NAME );
+        final String logModuleName = "logfix";
+        final String logfixArtifactId = rootPom.getArtifactId() + "-logfix";
+
+        createModule( rootTopLevelPackage, parentGAV, logModuleName, jarPackagingProvider, 6, logfixArtifactId );
+
+        // add log fix file
+        addLogServiceReference();
+    }
+
+    private void addLogServiceReference()
+    {
+        final String serviceFile =
+            pathResolver.getFocusedIdentifier( Path.SRC_MAIN_SERVICES, "org.apache.commons.logging.LogFactory" );
+
+        final InputStream serviceFileInputStream =
+            FileUtils.getInputStream( getClass(), "org.apache.commons.logging.LogFactory" );
+
+        OutputStream outputStream = null;
+
+        try
+        {
+            outputStream = fileManager.createFile( serviceFile ).getOutputStream();
+            IOUtils.copy( serviceFileInputStream, outputStream );
+        }
+        catch( final IOException e )
+        {
+            LOGGER.warning( "Unable to install log4j logging configuration" );
+        }
+        finally
+        {
+            IOUtils.closeQuietly( serviceFileInputStream );
+            IOUtils.closeQuietly( outputStream );
+        }
+    }
+
+    @Override
+    public void serverRun()
+    {
+        Pom serverPom = pomManagementService.getPomFromModuleName( "server" );
+        ExternalConsoleProvider externalShellProvider = externalShellProviderRegistry.getExternalShellProvider();
+
+        final String workingDir = "C:\\Users\\greg\\raytest3\\server";
+        externalShellProvider.getConsole().execute(workingDir, "mvn", "verify tomcat7:run-war -pl :ray-demo-3-logfix,:ray-demo-3-server -am");
+    }
+
+    @Override
+    public boolean isServerRunAvailable()
+    {
+        return externalShellProviderRegistry.getExternalShellProvider() != null;
     }
 
     //TODO finish impl

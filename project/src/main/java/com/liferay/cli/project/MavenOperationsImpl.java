@@ -3,6 +3,7 @@ package com.liferay.cli.project;
 import com.liferay.cli.model.JavaPackage;
 import com.liferay.cli.process.manager.ActiveProcessManager;
 import com.liferay.cli.process.manager.ProcessManager;
+import com.liferay.cli.project.maven.Pom;
 import com.liferay.cli.project.packaging.PackagingProvider;
 import com.liferay.cli.project.packaging.PackagingProviderRegistry;
 import com.liferay.cli.support.logging.HandlerUtils;
@@ -12,11 +13,16 @@ import com.liferay.cli.support.util.XmlUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
@@ -89,7 +95,7 @@ public class MavenOperationsImpl extends AbstractProjectOperations implements
     protected PackagingProviderRegistry packagingProviderRegistry;
     @Reference private ProcessManager processManager;
 
-    private void addModuleDeclaration(final String moduleName,
+    protected void addModuleDeclaration(final String moduleName,
             final Document pomDocument, final Element root) {
         final Element modulesElement = createModulesElementIfNecessary(
                 pomDocument, root);
@@ -97,6 +103,85 @@ public class MavenOperationsImpl extends AbstractProjectOperations implements
             modulesElement.appendChild(XmlUtils.createTextElement(pomDocument,
                     "module", moduleName));
         }
+    }
+
+    public void addPluginDependency( final String moduleName, final GAV plugin, final Dependency newPluginDependency, Document document, Element root )
+    {
+        Validate.notNull( plugin, "Plugin required" );
+        Validate.notNull( newPluginDependency, "Dependency required" );
+
+        final Pom pom = getPomFromModuleName( moduleName );
+        Validate.notNull( pom, "The pom is not available, so dependencies cannot be added" );
+
+        final Element pluginElement = XmlUtils.findRequiredElement( "//build/pluginManagement/plugins/plugin[artifactId='" + plugin.getArtifactId() + "']", root );
+
+        final Element dependenciesElement = DomUtils.createChildIfNotExists( "dependencies", pluginElement, document );
+        final List<Element> existingDependencyElements = XmlUtils.findElements( "dependency", dependenciesElement);
+
+        // Look for any existing instances of this dependency
+        boolean inserted = false;
+        final List<String> addedDependencies = new ArrayList<String>();
+        final List<String> removedDependencies = new ArrayList<String>();
+        final List<String> skippedDependencies = Collections.emptyList();
+
+        for( Element existingDependencyElement : existingDependencyElements )
+        {
+            final Dependency existingDependency = new Dependency( existingDependencyElement );
+
+            if ( existingDependency.hasSameCoordinates( newPluginDependency ) )
+            {
+                // It's the same artifact, but might have a different
+                // version, exclusions, etc.
+                if (!inserted)
+                {
+                    // We haven't added the new one yet; do so now
+                    dependenciesElement.insertBefore( newPluginDependency.getElement( document ), existingDependencyElement );
+                    inserted = true;
+
+                    if ( !newPluginDependency.getVersion().equals( existingDependency.getVersion()))
+                    {
+                        // It's a genuine version change => mention the
+                        // old and new versions in the message
+                        addedDependencies.add(newPluginDependency.getSimpleDescription());
+                        removedDependencies.add(existingDependency.getSimpleDescription());
+                    }
+                }
+                // Either way, we remove the previous one in case it was
+                // different in any way
+                dependenciesElement
+                        .removeChild(existingDependencyElement);
+            }
+            // Keep looping in case it's present more than once
+        }
+
+        if (!inserted)
+        {
+            // We didn't encounter any existing dependencies with the
+            // same coordinates; add it now
+            dependenciesElement.appendChild(newPluginDependency.getElement(document));
+            addedDependencies.add(newPluginDependency.getSimpleDescription());
+        }
+
+        final String message = getPomDependenciesUpdateMessage( addedDependencies, removedDependencies, skippedDependencies );
+        final String newContents = XmlUtils.nodeToString(document);
+    }
+
+    private String getPomDependenciesUpdateMessage(
+        final Collection<String> addedDependencies, final Collection<String> removedDependencies,
+        final Collection<String> skippedDependencies )
+    {
+        final List<String> changes = new ArrayList<String>();
+        changes.add( getDescriptionOfChange( ADDED, addedDependencies, "dependency", "dependencies" ) );
+        changes.add( getDescriptionOfChange( REMOVED, removedDependencies, "dependency", "dependencies" ) );
+        changes.add( getDescriptionOfChange( SKIPPED, skippedDependencies, "dependency", "dependencies" ) );
+        for( final Iterator<String> iter = changes.iterator(); iter.hasNext(); )
+        {
+            if( StringUtils.isBlank( iter.next() ) )
+            {
+                iter.remove();
+            }
+        }
+        return StringUtils.join( changes, "; " );
     }
 
     public void createModule(final JavaPackage topLevelPackage,
@@ -119,9 +204,8 @@ public class MavenOperationsImpl extends AbstractProjectOperations implements
                 root);
         if (modulesElement == null) {
             modulesElement = pomDocument.createElement("modules");
-            final Element repositories = XmlUtils.findFirstElement(
-                    "/project/repositories", root);
-            root.insertBefore(modulesElement, repositories);
+            final Element build = XmlUtils.findFirstElement( "/project/build", root);
+            root.insertBefore(modulesElement, build);
         }
         return modulesElement;
     }
