@@ -99,7 +99,13 @@ public class RayOperationsImpl extends AbstractProjectOperations implements RayO
 
     public boolean isCreateProjectAvailable()
     {
-        return !isProjectAvailable( getFocusedModuleName() );
+        return !isProjectAvailable( getFocusedModuleName() ) && isSafeLocation();
+    }
+
+    private boolean isSafeLocation()
+    {
+        // TODO finish implementation
+        return true;
     }
 
 }

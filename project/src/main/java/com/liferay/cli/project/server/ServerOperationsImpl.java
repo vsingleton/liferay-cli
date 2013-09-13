@@ -6,6 +6,7 @@ import com.liferay.cli.project.Dependency;
 import com.liferay.cli.project.GAV;
 import com.liferay.cli.project.MavenOperationsImpl;
 import com.liferay.cli.project.Path;
+import com.liferay.cli.project.maven.Module;
 import com.liferay.cli.project.maven.Pom;
 import com.liferay.cli.project.packaging.JarPackaging;
 import com.liferay.cli.project.packaging.PackagingProvider;
@@ -17,6 +18,7 @@ import com.liferay.cli.support.util.DomUtils;
 import com.liferay.cli.support.util.FileUtils;
 import com.liferay.cli.support.util.XmlUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -174,22 +176,58 @@ public class ServerOperationsImpl extends MavenOperationsImpl implements ServerO
     @Override
     public void serverRun()
     {
-        Pom serverPom = pomManagementService.getPomFromModuleName( "server" );
+        final Pom serverPom = pomManagementService.getPomFromModuleName( "server" );
+        final String workingDir = new File( serverPom.getPath() ).getParent(); // TODO handle this better
+
+        final String serverArtifactId = serverPom.getArtifactId();
+        String logfixArtifactId = null;
+
+        for(Module module : serverPom.getModules())
+        {
+            if( module.getName().endsWith( "logfix" ) )
+            {
+                Pom logfixPom = pomManagementService.getPomFromModuleName( "logfix" );
+                logfixArtifactId = logfixPom.getArtifactId();
+
+                break;
+            }
+        }
+
+        final String mavenCommandArgs = getServerRunMavenCommand( logfixArtifactId, serverArtifactId );
+
         ExternalConsoleProvider externalShellProvider = externalShellProviderRegistry.getExternalShellProvider();
 
-        final String workingDir = "C:\\Users\\greg\\raytest3\\server";
-        externalShellProvider.getConsole().execute(workingDir, "mvn", "verify tomcat7:run-war -pl :ray-demo-3-logfix,:ray-demo-3-server -am");
+        externalShellProvider.getConsole().execute(workingDir, "mvn", mavenCommandArgs );
+    }
+
+    private String getServerRunMavenCommand( String logfixArtifactId, String serverArtifactId )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append( "-Dmaven.test.skip verify tomcat7:run-war -pl :");
+        sb.append( logfixArtifactId );
+        sb.append( ",:" );
+        sb.append( serverArtifactId );
+        sb.append( " -am" );
+
+        return sb.toString();
     }
 
     @Override
     public boolean isServerRunAvailable()
     {
-        return externalShellProviderRegistry.getExternalShellProvider() != null;
+        return externalShellProviderRegistry.getExternalShellProvider() != null && checkValidServerSetup();
     }
 
-    //TODO finish impl
+    private boolean checkValidServerSetup()
+    {
+        //TODO finish impl
+        return true;
+    }
+
     private String getServerEditionValue( ServerEdition serverEdition )
     {
+        //TODO finish impl
         return "CE";
     }
 
