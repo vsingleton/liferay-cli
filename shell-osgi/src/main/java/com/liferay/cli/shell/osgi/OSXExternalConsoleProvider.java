@@ -5,6 +5,9 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 
+/**
+ * @author Gregory Amerson
+ */
 @Component
 @Service
 public class OSXExternalConsoleProvider extends BaseExternalConsoleProvider
@@ -20,7 +23,7 @@ public class OSXExternalConsoleProvider extends BaseExternalConsoleProvider
     @Override
     public ExternalConsole getConsole()
     {
-        return new XtermConsole();
+        return new XtermConsole( "/usr/X11/bin/xterm" );
     }
 
     @Override

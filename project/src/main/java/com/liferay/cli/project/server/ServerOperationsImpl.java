@@ -177,7 +177,7 @@ public class ServerOperationsImpl extends MavenOperationsImpl implements ServerO
     public void serverRun()
     {
         final Pom serverPom = pomManagementService.getPomFromModuleName( "server" );
-        final String workingDir = new File( serverPom.getPath() ).getParent(); // TODO handle this better
+        final String workingDir = new File( serverPom.getPath() ).getParent(); // TODO RAY handle unexpected results better
 
         final String serverArtifactId = serverPom.getArtifactId();
         String logfixArtifactId = null;
@@ -221,17 +221,17 @@ public class ServerOperationsImpl extends MavenOperationsImpl implements ServerO
 
     private boolean checkValidServerSetup()
     {
-        //TODO finish impl
+        //TODO RAY finish impl
         return true;
     }
 
     private String getServerEditionValue( ServerEdition serverEdition )
     {
-        //TODO finish impl
+        //TODO RAY finish impl
         return "CE";
     }
 
-    //TODO finish impl
+    //TODO RAY finish impl
     private String getLatestAvailableServerVersion( String serverVersion )
     {
         if( "6.1".equals( serverVersion ) )

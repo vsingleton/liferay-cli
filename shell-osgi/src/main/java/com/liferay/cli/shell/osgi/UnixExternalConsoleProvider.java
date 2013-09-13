@@ -5,6 +5,9 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 
+/**
+ * @author Gregory Amerson
+ */
 @Component
 @Service
 public class UnixExternalConsoleProvider extends BaseExternalConsoleProvider
@@ -20,7 +23,8 @@ public class UnixExternalConsoleProvider extends BaseExternalConsoleProvider
     @Override
     public ExternalConsole getConsole()
     {
-        return new XtermConsole();
+        //TODO RAY don't hardcode xterm location
+        return new XtermConsole( "/usr/bin/xterm" );
     }
 
     @Override

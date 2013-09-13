@@ -60,13 +60,13 @@ public class RayOperationsImpl extends AbstractProjectOperations implements RayO
         return finalProjectName.replaceAll( "\\s+", "-" ).toLowerCase();
     }
 
-    //TODO finish impl
+    //TODO RAY finish impl
     private String getProjectNameFromDirectory()
     {
         return "RayDemo";
     }
 
-    //TODO improve impl
+    //TODO RAY improve impl
     private String getDefaultJavaPackageFromProjectName( String projectName )
     {
         return projectName.replaceAll( "\\s+", "." ).toLowerCase();
@@ -104,7 +104,7 @@ public class RayOperationsImpl extends AbstractProjectOperations implements RayO
 
     private boolean isSafeLocation()
     {
-        // TODO finish implementation
+        // TODO RAY finish implementation
         return true;
     }
 

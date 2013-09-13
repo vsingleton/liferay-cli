@@ -5,6 +5,9 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 
+/**
+ * @author Gregory Amerson
+ */
 @Component
 @Service
 public class WindowsExternalShellProvider extends BaseExternalConsoleProvider

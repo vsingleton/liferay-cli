@@ -1,6 +1,9 @@
 package com.liferay.cli.shell.osgi;
 
 
+/**
+ * @author Gregory Amerson
+ */
 public interface ExternalConsole
 {
 

@@ -14,6 +14,9 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.osgi.service.component.ComponentContext;
 
+/**
+ * @author Gregory Amerson
+ */
 @Component(immediate = true)
 @Service
 public class DefaultShellSettingsProvider implements ShellSettingsProvider, CommandMarker
