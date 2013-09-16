@@ -18,26 +18,25 @@ public class Versions
     	
     	String available = "";
 
-    	RepositorySystem repoSystem = Repositories.newRepositorySystem();
-    	if (repoSystem == null) {
+    	RepositorySystem repositorySystem = Repositories.newRepositorySystem();
+    	if (repositorySystem == null) {
 			System.err.println("main: repoSystem == null");
 		} else {
 
-			RepositorySystemSession session = Repositories.newSession(repoSystem);
+			RepositorySystemSession repositorySystemSession = Repositories.newSession(repositorySystem);
 
 			Artifact defaultArtifact = new DefaultArtifact(group + ":" + artifact + ":" + "[0,)");
 
-			// RemoteRepository repo = Repositories.newCentralRepository();
-			RemoteRepository central = new RemoteRepository.Builder("central", "default",
+			RemoteRepository remoteRepository = new RemoteRepository.Builder("central", "default",
 					"http://repo1.maven.org/maven2/").build();
 
 			VersionRangeRequest rangeRequest = new VersionRangeRequest();
 			rangeRequest.setArtifact(defaultArtifact);
-			rangeRequest.addRepository(central);
+			rangeRequest.addRepository(remoteRepository);
 
-			VersionRangeResult rangeResult = repoSystem.resolveVersionRange(session, rangeRequest);
+			VersionRangeResult versionRangeResult = repositorySystem.resolveVersionRange(repositorySystemSession, rangeRequest);
 
-			List<Version> versions = rangeResult.getVersions();
+			List<Version> versions = versionRangeResult.getVersions();
 			if (versions == null) {
 				System.out.println("getAvailable: newestVersion == null");
 			} else {
@@ -52,34 +51,31 @@ public class Versions
     	
     	String version = "";
 
-    	RepositorySystem repoSystem = Repositories.newRepositorySystem();
-    	if (repoSystem == null) {
+    	RepositorySystem repositorySystem = Repositories.newRepositorySystem();
+    	if (repositorySystem == null) {
 			System.err.println("main: repoSystem == null");
 		} else {
 
-			RepositorySystemSession session = Repositories.newSession(repoSystem);
+			RepositorySystemSession repositorySystemSession = Repositories.newSession(repositorySystem);
 
 			Artifact defaultArtifact = new DefaultArtifact(group + ":" + artifact + ":" + "[0,)");
 
-			RemoteRepository central = new RemoteRepository.Builder("central", "default",
+			RemoteRepository remoteRepository = new RemoteRepository.Builder("central", "default",
 					"http://repo1.maven.org/maven2/").build();
 
 			VersionRangeRequest rangeRequest = new VersionRangeRequest();
 			rangeRequest.setArtifact(defaultArtifact);
-			rangeRequest.addRepository(central);
+			rangeRequest.addRepository(remoteRepository);
 
-			VersionRangeResult rangeResult = repoSystem.resolveVersionRange(session, rangeRequest);
+			VersionRangeResult versionRangeResult = repositorySystem.resolveVersionRange(repositorySystemSession, rangeRequest);
 
-			Version newestVersion = rangeResult.getHighestVersion();
+			Version highestVersion = versionRangeResult.getHighestVersion();
 			
-			if (newestVersion == null) {
+			if (highestVersion == null) {
 				System.out.println("getLatestMinor: newestVersion == null");
 			} else {
-
-				System.out.println("getLatestMinor: Newest version " + newestVersion + " from repository "
-						+ rangeResult.getRepository(newestVersion));
-
-				version = newestVersion.toString();
+				System.out.println("getLatestMinor: highestVersion = " + highestVersion);
+				version = highestVersion.toString();
 			}
 		}
     	

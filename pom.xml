@@ -29,6 +29,7 @@
         <module>file-monitor-polling-ray</module>
         <module>project</module>
 	<module>process-manager</module>
+		<module>aether</module>
 	</modules>
     <organization>
         <name>Liferay, Inc</name>
