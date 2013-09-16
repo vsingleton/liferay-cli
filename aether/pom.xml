@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- 
+	<parent>
+        <groupId>com.liferay.cli</groupId>
+        <artifactId>com.liferay.cli.osgi.bundle</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+     -->
+    <groupId>com.liferay.cli</groupId>
+	<artifactId>com.liferay.cli.aether</artifactId>
+	<packaging>jar</packaging>
+	<name>Liferay CLI - Aether</name>
+	<version>1.0-SNAPSHOT</version>
+	<dependencies>
+	<!-- Begin Aether -->
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-api</artifactId>
+			<version>${aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-util</artifactId>
+			<version>${aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-impl</artifactId>
+			<version>${aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-connector-basic</artifactId>
+			<version>${aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-transport-file</artifactId>
+			<version>${aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-transport-http</artifactId>
+			<version>${aether.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-aether-provider</artifactId>
+			<version>${maven.version}</version>
+			<!-- 
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.plexus</groupId>
+					<artifactId>plexus-utils</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.aether</groupId>
+					<artifactId>aether-util</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.aether</groupId>
+					<artifactId>aether-impl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.aether</groupId>
+					<artifactId>aether-spi</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.aether</groupId>
+					<artifactId>aether-api</artifactId>
+				</exclusion>
+			</exclusions>
+			-->
+		</dependency>
+		<!-- End Aether -->
+		</dependencies>
+	<properties>
+		<aether.version>0.9.0.M3</aether.version>
+		<maven.version>3.1.0</maven.version>
+	</properties>
+</project>
+
